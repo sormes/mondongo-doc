@@ -149,3 +149,40 @@ usa el **underscore** del nombre del documento.
 
     [php]
     $definition->setCollection('articles');
+
+Diferencias entre referencias y relaciones
+------------------------------------------
+
+Las referencias son relaciones hacia otros documentos, mientras que las
+relaciones son enlaces hacia los documentos que referencian.
+
+Mejor con un ejemplo:
+
+    [php]
+    class Author extends MondongoDocument
+    {
+      static public function define($definition)
+      {
+        $definition->setFields(array(
+          'name' => 'string'
+        ));
+
+        $definition->relation('articles', array('type' => 'many', 'class' => 'Article', 'field' => 'author_id'));
+      }
+    }
+
+    class Article extends MondongoDocument
+    {
+      static public function define($definition)
+      {
+        $definition->setFields(array(
+          'title'     => 'string',
+          'author_id' => 'id',
+        ));
+
+        $definition->reference('author', array('type' => 'one', 'class' => 'Author', 'field' => 'author_id'));
+      }
+    }
+
+Mediante *$article['author']* accedemos al author del artículo, mientras que
+con *$author['articles']* accedemos a los artículos de ese autor.

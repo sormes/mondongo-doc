@@ -141,3 +141,40 @@ You can also indicate the collection for the document, and in case it is not ind
 
     [php]
     $definition->setCollection('articles');
+
+Differences between references and relations
+--------------------------------------------
+
+The references are the relations to external documents, and the relations are
+links to the documents referenced.
+
+Better with an example:
+
+    [php]
+    class Author extends MondongoDocument
+    {
+      static public function define($definition)
+      {
+        $definition->setFields(array(
+          'name' => 'string'
+        ));
+
+        $definition->relation('articles', array('type' => 'many', 'class' => 'Article', 'field' => 'author_id'));
+      }
+    }
+
+    class Article extends MondongoDocument
+    {
+      static public function define($definition)
+      {
+        $definition->setFields(array(
+          'title'     => 'string',
+          'author_id' => 'id',
+        ));
+
+        $definition->reference('author', array('type' => 'one', 'class' => 'Author', 'field' => 'author_id'));
+      }
+    }
+
+With *$article['author']* we get the author of the article, and with
+*$author['articles']* we get the articles of the author.
