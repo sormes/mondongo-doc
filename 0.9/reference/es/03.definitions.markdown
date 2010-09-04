@@ -64,7 +64,7 @@ Referencias
 
 Las referencias son relaciones hacia otros documentos.
 
-Para definirlas hay que indicar el nombre de la referencia, el tipo, el modelo
+Para definirlas hay que indicar el nombre de la referencia, el tipo, la clase
 y el campo en el que se guarda la referencia.
 
 Pueden ser hacia uno:
@@ -72,14 +72,14 @@ Pueden ser hacia uno:
     [php]
     $definition->setField('author_id', 'id');
 
-    $definition->reference('author', array('type' => 'one', 'model' => 'Author', 'field' => 'author_id'));
+    $definition->reference('author', array('type' => 'one', 'class' => 'Author', 'field' => 'author_id'));
 
 O hacia varios:
 
     [php]
     $definition->setField('category_ids', 'raw');
 
-    $definition->reference('categories', array('type' => 'many', 'model' => 'Category', 'field' => 'category_ids'));
+    $definition->reference('categories', array('type' => 'many', 'class' => 'Category', 'field' => 'category_ids'));
 
 Embebidos
 ---------
@@ -102,35 +102,35 @@ MondongoDocumentEmbed y no pueden tener más embebidos.
     }
 
 Para definir los embebidos en los documentos hay que asignar el nombre, el tipo
-y el modelo
+y la clase.
 
 Se puede embeber uno:
 
     [php]
-    $definition->embed(array('type' => 'one', 'model' => 'Address'));
+    $definition->embed(array('type' => 'one', 'class' => 'Address'));
 
 O varios:
 
     [php]
-    $definition->embed(array('type' => 'many', 'model' => 'Comment'));
+    $definition->embed(array('type' => 'many', 'class' => 'Comment'));
 
 Relaciones
 ----------
 
 Las relaciones son relaciones desde otros documentos.
 
-Para definirlas hay que indicar el nombre de la relación, el tipo, el modelo y
+Para definirlas hay que indicar el nombre de la relación, el tipo, la clase y
 el campo desde el que se referencia.
 
 Pueden ser desde uno:
 
     [php]
-    $definition->relation('address', array('type' => 'one', 'model' => 'Address', 'field' => 'author_id'));
+    $definition->relation('address', array('type' => 'one', 'class' => 'Address', 'field' => 'author_id'));
 
 O desde varios:
 
     [php]
-    $definition->relation('articles', array('type' => 'many', 'model' => 'Article', 'field' => 'author_id'));
+    $definition->relation('articles', array('type' => 'many', 'class' => 'Article', 'field' => 'author_id'));
 
 Conexión
 --------
