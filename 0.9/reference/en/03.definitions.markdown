@@ -142,8 +142,8 @@ You can also indicate the collection for the document, and in case it is not ind
     [php]
     $definition->setCollection('articles');
 
-Differences between references and relations
---------------------------------------------
+Difference between references and relations
+-------------------------------------------
 
 The references are the relations to external documents, and the relations are
 links to the documents referenced.

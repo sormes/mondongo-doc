@@ -150,8 +150,8 @@ usa el **underscore** del nombre del documento.
     [php]
     $definition->setCollection('articles');
 
-Diferencias entre referencias y relaciones
-------------------------------------------
+Diferencia entre referencias y relaciones
+-----------------------------------------
 
 Las referencias son relaciones hacia otros documentos, mientras que las
 relaciones son enlaces hacia los documentos que referencian.
