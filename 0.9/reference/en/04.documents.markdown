@@ -90,6 +90,8 @@ References to many can be also assigned with objects or ids, but with objects we
     $article['categories']->add($category1);
     $article['categories']->add($category2);
 
+    $article['categories']->removeElement($category1);
+
     $article['categories']->setElements($categories);
 
     $article['categories']->clear();

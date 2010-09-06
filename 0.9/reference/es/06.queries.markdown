@@ -14,30 +14,42 @@ Consultas simples por id (devuelve un resultado):
     [php]
     $article = $articleRepository->get($id); // id como cadena u objeto MongoId
 
-Consultas con condiciones y opciones (devuelve un array de documentos):
+Consultas con opciones (devuelve un array de documentos):
 
     [php]
     // todos los artículos
     $articles = $articleRepository->find();
 
     // artículos activos
-    $articles = $articleRepository->find(array('is_active' => true));
+    $articles = $articleRepository->find(array('query' => array('is_active' => true)));
 
     // ordenando
-    $articles = $articleRepository->find(array(), array('sort' => array('date' => 1)));
+    $articles = $articleRepository->find(array('sort' => array('date' => 1)));
 
     // limitando
-    $articles = $articleRepository->find(array(), array('limit' => 10));
+    $articles = $articleRepository->find(array('limit' => 10));
 
     // saltando
-    $articles = $articleRepository->find(array(), array('skip' => 5));
+    $articles = $articleRepository->find(array('skip' => 5));
 
-Consultas para obtener un resultado (también permite condiciones y opciones):
+Consultas para obtener un resultado (también permite opciones):
 
     [php]
     $article = $articleRepository->findOne();
 
     $article = $articleRepository->findOne(array('is_active' => true));
+
+Contando
+--------
+
+Para contar elementos tenemos la función *count*:
+
+    [php]
+    // todos
+    $count = $articleRepository->count();
+
+    // con condiciones
+    $count = $articleRepository->count(array('is_active' => false));
 
 Borrando
 --------

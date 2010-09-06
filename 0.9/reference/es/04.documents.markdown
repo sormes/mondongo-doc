@@ -93,6 +93,8 @@ con los objetos se usa un grupo de objetos para trabajar mejor:
     $article['categories']->add($category1);
     $article['categories']->add($category2);
 
+    $article['categories']->removeElement($category1);
+
     $article['categories']->setElements($categories);
 
     $article['categories']->clear();
