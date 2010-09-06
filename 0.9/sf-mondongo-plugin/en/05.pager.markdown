@@ -1,0 +1,30 @@
+Pager
+=====
+
+You can paginate yours results with the **sfMondongoPager**. The API is similar
+to the Propel or Doctrine pager.
+
+    [php]
+    // action
+    $pager = new sfMondongoPager('Article', 10);
+    $pager->init();
+
+    // view
+    if ($pager->haveToPaginate)
+    {
+      foreach ($pager->getResults() as $result)
+      {
+        // ...
+      }
+    }
+
+You can also customize the query with the options to the *find* method of
+Mondongo.
+
+    [php]
+    $pager = new sfMondongoPager('Article');
+    $pager->setFindOptions(array(
+      'query' => array('is_active' => true),
+      'sort'  => array('date' => -1),
+    ));
+    $pager->init();

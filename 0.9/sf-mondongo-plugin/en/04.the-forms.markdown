@@ -69,8 +69,7 @@ Options:
   * **model**: (required) the referenced class
   * **add_empty**: if adding a blank option
   * **method**: method to obtain the displayed value of the document
-  * **find_query**: query for finding
-  * **find_options**: options for the query
+  * **find_options**: options for the find
 
 The *sfWidgetFormMondongoChoice* extends from *sfWidgetFormChoice*, that's why we can also use its options.
 
@@ -89,7 +88,26 @@ Options:
 
   * **model**: (required) the referenced class
   * **field**: the field from which it is referenced (*_id* by default)
-  * **find_query**: query for finding
+  * **query**: query for finding
   * **multiple**: if it is multiple
   * **min**: minimum number of referenced
   * **max**: maximum number of referenced
+
+### sfValidatorMondongoUnique
+
+With the **sfValidatorMondongoUnique** we validate unique values in the
+documents. It must be used in the *postValidator*.
+
+    [php]
+    $this->validatorSchema->setPostValidator(new sfValidatorMondongoUnique(array(
+      'model' => 'Article',
+      'field' => 'slug',
+    )));
+
+Options:
+
+  * **model**: the model (required)
+  * **field**: the fields (or fields as array) (required)
+  * **include_identifier**: if check the identifier
+  * **case_insensitive**: if check case insensitive (bool or array of fields)
+  * **throw_field_error**: if throw the error in field; false global error, true first field, or string a explicit field

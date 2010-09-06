@@ -73,7 +73,6 @@ Opciones:
   * **model**: (obligatorio) la clase referenciada
   * **add_empty**: si añadir una opción en blanco
   * **method**: método para obtener el valor a mostrar del documento
-  * **find_query**: query para la consulta
   * **find_options**: opciones para la consulta
 
 El *sfWidgetFormMondongoChoice* extiende de *sfWidgetFormChoice*, por lo que
@@ -81,7 +80,7 @@ también podemos usar sus opciones.
 
 ### sfValidatorMondongoChoice
 
-con el *sfValidatorMondongoChoice* validamos uno o varios documentos
+Con el *sfValidatorMondongoChoice* validamos uno o varios documentos
 referenciados.
 
     [php]
@@ -95,7 +94,25 @@ Opciones:
 
   * **model**: (obligatorio) la clase referenciada
   * **field**: el campo por el que se referencia (por defecto *_id*)
-  * **find_query**: query para la consulta
+  * **query**: query para la consulta
   * **multiple**: si es múltiple
   * **min**: número mínimo de referenciados
   * **max**: número máximo de referenciados
+
+### sfValidatorMondongoUnique
+
+Con el *sfValidatorMondongoUnique* validamos valores únicos en los documentos.
+Debe usarse en el *postValidator*.
+
+    [php]
+    $this->validatorSchema->setPostValidator(new sfValidatorMondongoUnique(array(
+      'model' => 'Article',
+      'field' => 'slug',
+    )));
+
+Opciones:
+  * **model**: el modelo (obligatorio)
+  * **field**: el campo (o campos como array) (array asociativo si cambian nombres de campos entre formulario y modelo) (obligatorio)
+  * **include_identifier**: si comprobar el identificador
+  * **case_insensitive**: si hacer la consulta case insensitive (booleano o array de campos)
+  * **throw_field_error**: si lanzar el error en un campo; true (primer campo), false (error global) o string (campo explícito)
