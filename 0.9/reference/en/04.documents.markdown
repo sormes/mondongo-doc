@@ -129,3 +129,39 @@ Relations
 ----------
 
 Working with relations is the same as with references, and as is embeds only by object, and only for accessing, because they can't be assigned.
+
+Clean Documents
+---------------
+
+The Mondongo documents are clean, so its are easily debuggables.
+
+    [php]
+    $article = new Article();
+    $article->fromArray(array(
+      'title'    => 'Mondongo',
+      'content' => '1.0.0 Released',
+    ));
+    print_r($article);
+
+    /*
+    Article Object
+    (
+        [data:protected] => Array
+            (
+                [fields] => Array
+                    (
+                        [title] => Mondongo
+                        [content] => 1.0.0 Released
+                    )
+
+            )
+
+        [fieldsModified:protected] => Array
+            (
+                [title] =>
+                [content] =>
+            )
+
+        [id:protected] =>
+    )
+    */

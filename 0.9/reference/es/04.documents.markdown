@@ -135,3 +135,39 @@ Relaciones
 Con las relaciones también se trabaja igual que con las referencias, e igual
 que en los embebidos sólo por objeto, y sólo para acceder, ya que no se pueden
 asignar.
+
+Documentos Limpios
+------------------
+
+Los documentos Mondongo son limpios, por lo que son fácilmente debuggables.
+
+    [php]
+    $article = new Article();
+    $article->fromArray(array(
+      'title'    => 'Mondongo',
+      'content' => '1.0.0 Released',
+    ));
+    print_r($article);
+
+    /*
+    Article Object
+    (
+        [data:protected] => Array
+            (
+                [fields] => Array
+                    (
+                        [title] => Mondongo
+                        [content] => 1.0.0 Released
+                    )
+
+            )
+
+        [fieldsModified:protected] => Array
+            (
+                [title] =>
+                [content] =>
+            )
+
+        [id:protected] =>
+    )
+    */
