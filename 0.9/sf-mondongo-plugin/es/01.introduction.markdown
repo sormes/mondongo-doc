@@ -10,5 +10,7 @@ El sfMondongoPlugin tiene las siguientes funcionalidades:
   * Relaciones automáticas en el esquema YAML.
   * Generación de formularios desde el modelo.
   * Widget y validador para trabajar con referencias.
+  * Validador para valores únicos.
+  * Paginador.
   * Tarea para cargar fixtures.
   * Tarea para sincronizar los índices.
