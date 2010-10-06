@@ -10,3 +10,7 @@ We can define Mondongo connections in the *databases.yml*:
         param:
           server:   localhost
           database: my_database
+
+If you have created the project without ORM (--orm=none) you have to enable
+the use of databases in "sf_use_database" on settings.yml config file of
+your apps.

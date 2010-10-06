@@ -10,3 +10,7 @@ Podemos definir conexiones Mondongo en el *databases.yml*:
         param:
           server:   localhost
           database: my_database
+
+Si has creado el project sin ORM (--orm=none) tendrás que activar el uso de las
+bases de datos en la opción "sf_use_database" del archivo de configuración
+settings.yml de tus aplicaciones.
