@@ -1,0 +1,273 @@
+Mapping Documents
+=================
+
+The **mapping** of the documents in Mondongo is done with the
+**classes configurations** of Mondator.
+
+Coonection
+----------
+
+You can **explicitly** define the connection of the documents. If it isn't done
+Mondongo uses the **default** connection.
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            // defining explicitly the connection
+            'connection' => 'global',
+            'fields' => array(
+                'title' => 'string',
+            ),
+        ),
+    );
+
+>[NOTE]
+>To specify the connections it is used the **connection names** that
+>are assigned to the Mondongo.
+
+Collection
+----------
+
+You can also define **explicitly** the collection of the database
+used in the document. If it is not specified Mondongo uses the
+[CamelCase](http://en.wikipedia.org/wiki/CamelCase) of the name of the classes.
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            // defining explicitly the connection
+            'collection' => 'articulos',
+            'fields' => array(
+                'title' => 'string',
+            ),
+        ),
+    );
+
+Mondongo Types
+--------------
+
+The Mondongo types allow to **map data between PHP and Mongo**.
+
+>[SIDEBAR]
+>Mondongo Types
+>
+>  * **array** (serialized arrays)
+>  * **bin_data** (for files up to 4Mb)
+>  * **boolean** (booleans)
+>  * **date** (dates)
+>  * **float** (floating numbers)
+>  * **integer** (integers)
+>  * **raw** (without processing)
+>  * **reference_one** (for references to one)
+>  * **reference_many** (for references to many)
+>  * **string** (strings)
+
+You can also define **Custom Mondongo Types**. We'll see how later.
+
+Fields
+------
+
+The fields are the **data of the documents**, the same as in Mongo.
+
+To define the fields you only have to indicate the **type** and, if you want, more
+**options**. Mondongo allows the option **_default_** to assign a value by default.
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                // as string
+                'title' => 'string',
+                // as array
+                'content' => array('type' => 'string'),
+                // as array providing more options
+                'is_active' => array('type' => 'boolean', 'default' => false),
+            ),
+        ),
+    );
+
+>[NOTE]
+>Mongo allows a _free schema_, but for mapping the documents with Mondongo
+>**you must specify the field** you'll use.
+
+References
+----------
+
+References are **relations to other documents**. MongoDB doesn't 
+allow joins or foreign keys, nut you can save references to other documents
+and later consult them. Mondongo allows you to do it very easily.
+
+To map references you have to define
+**the reference and the field which is referenced**.
+
+>[SIDEBAR]
+>Types of references
+>
+>There are two types of references, which vary in the number of documents
+>that are going to be referenced.
+>
+>  * **one**
+>  * **many**
+>
+>The field that references has got to be of the type **reference_one** or
+>**reference_many** depending on the type of reference.
+
+In the reference you have to indicate:
+
+  * The **name** of the reference.
+  * The **class** which is referenced.
+  * The **field that references**.
+  * The **type** of reference.
+
+Let's see some examples.
+
+    [php]
+    array(
+        'Model\Document\Author' => array(
+            'fields' => array(
+                'name' => 'string',
+            ),
+        ),
+        'Model\Document\Category' => array(
+            'fields' => array(
+                'name' => 'string',
+            ),
+        ),
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'        => 'string',
+                'content'      => 'string',
+                'author_id'    => 'reference_one',
+                'category_ids' => 'reference_many',
+            ),
+            'references' => array(
+                // to one
+                'author' => array('class' => 'Model\Document\Author', 'field' => 'author_id', 'type' => 'one'),
+                // to many
+                'categories' => array('class' => 'Model\Document\Category', 'field' => 'category_ids', 'type' => 'many'),
+            ),
+        ),
+    );
+
+>[NOTE]
+>You must inidicate the **full class**.
+
+embeddeds
+------
+
+The **embedded documents** are documents **inside** other documents.
+
+>[SIDEBAR]
+>Types of embeddeds
+>
+>There are two types of embeddeds, depending on the number of documents that 
+>they are going to embed.
+>
+>  * **one**
+>  * **many**
+
+In the embeddeds you have to indicate:
+
+  * The **name** of the embed.
+  * The **class** that is embedded.
+  * The **type** of embed.
+
+They are mapped the same way as regular documents, you simply have to indicate that it's an embedded document
+activating the option **_is_embedded_**.
+
+    [php]
+    array(
+        'Model\Document\Comment' => array(
+            'is_embedded' => true,
+            'fields' => array(
+                'name' => 'string',
+                'text' => 'string',
+            ),
+        ),
+        'Model\Document\Source' => array(
+            'is_embedded' => true,
+            'fields' => array(
+                'name' => 'string',
+                'url'  => 'string',
+            ),
+        ),
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+            'embeddeds' => array(
+                'source'   => array('class' => 'Model\Document\Source', 'type' => 'one'),
+                'comments' => array('class' => 'Model\Document\Comment', 'type' => 'many'),
+            ),
+        ),
+    );
+
+>[TIP]
+>Mondongo can work with **multiple embedded** documents, that's is, embed inside the embeddeds.
+
+Relations
+----------
+
+The relations are **relations from other documents**. They are the opposite to references.
+
+>[SIDEBAR]
+>Types of relations
+>
+>  * **one**
+>  * **many**
+
+In the relations you have to indicate:
+
+  * The **name** of the relation.
+  * The **class** that relates.
+  * The **type** of relation
+
+Let's see some examples.
+
+    [php]
+    array(
+        'Model\Document\Author' => array(
+            'fields' => array(
+                'name' => 'string',
+            ),
+            'relations' => array(
+                // to one
+                'phonenumber' => array('class' => 'Model\Document\PhoneNumber', 'type' => 'one'),
+                // to many
+                'articles' => array('class' => 'Model\Document\Article', 'type' => 'many'),
+            ),
+        ),
+        'Model\Document\PhoneNumber' => array(
+            'fields' => array(
+                'author_id' => 'reference_one',
+            ),
+            'references' => array(
+                'author' => array('class' => 'Model\Document\Author', 'field' => 'author_id', 'type' => 'one'),
+            ),
+        ),
+        'Model\Document\Category' => array(
+            'fields' => array(
+                'name' => 'string',
+            ),
+            'relations' => array(
+                // to many
+                'articles' => array('class' => 'Model\Document\Article', 'type' => 'many'),
+            ),
+        ),
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'        => 'string',
+                'content'      => 'string',
+                'author_id'    => 'reference_one',
+                'category_ids' => 'reference_many',
+            ),
+            'references' => array(
+                'author' => array('class' => 'Model\Document\Author', 'field' => 'author_id', 'type' => 'one'),
+                'categories' => array('class' => 'Model\Document\Category', 'field' => 'category_ids', 'type' => 'many'),
+            ),
+        ),
+    );
+
+>[CAUTION]
+>The relations **cannot be used in embedded documents**.

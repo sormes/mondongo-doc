@@ -1,0 +1,25 @@
+Introduction
+============
+
+The _sfMondongoPlugin_ is the plugin to **use Mondongo with Symfony**.
+
+>[SIDEBAR]
+>Functionalities
+>
+>  * Definition of Mondongo connections in the *databases.yml*.
+>  * Generation of the model and forms from YAML.
+>  * Widget and validator to work with references.
+>  * Task to load fixtures.
+>  * Task to synchronize the indexes.
+>  * Mondongo Extra Extensions.
+
+Instalation
+-----------
+
+### Pear
+
+    $ ./symfony plugin:install -s beta sfMondongoPlugin
+
+### Git
+
+[http://github.com/mondongo/sfMondongoPlugin](http://github.com/mondongo/sfMondongoPlugin)

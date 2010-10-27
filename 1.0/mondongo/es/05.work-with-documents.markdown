@@ -1,0 +1,163 @@
+Trabajar con Documentos
+=======================
+
+Los **documentos Mondongo** son simplemente **objetos PHP**.
+
+    [php]
+    use Model\Document\Article;
+
+    $article = new Article();
+
+>[NOTE]
+>Para **modificar y acceder** a los datos de los documentos Mondongo se usan
+>**setters y getters**.
+
+Identificador
+-------------
+
+Para acceder al identificador **_id** de los documentos Mongo se usa
+la función **_->getId()_**. Devuelve **_null_** si el documento es nuevo.
+
+    [php]
+    $id = $article->getId();
+
+>[TIP]
+>Para comprobar si el documento es nuevo puedes usar también la función
+>**_->isNew()_**.
+
+Campos
+------
+
+Se usan simplemente los setters y getters.
+
+    [php]
+    // setter
+    $article->setTitle('Mondongo');
+
+    // getter
+    $title = $article->getTitle();
+
+Referencias
+-----------
+
+### A uno (one)
+
+Las **referencias a uno** pueden asignarse con el **objeto** o con el **id**
+directamente.
+
+    [php]
+    // objeto
+    $article->setAuthor($author);
+
+    // id
+    $article->setAuthorId($author->getId());
+
+>[CAUTION]
+>Los **objetos** referenciados **no pueden ser nuevos**.
+
+Y se recuperan de la misma manera.
+
+    [php]
+    // objeto
+    $author = $article->getAuthor();
+
+    // id
+    $id = $article->getAuthorId();
+
+>[NOTE]
+>Siempre que se pueda es preferible **asignar por objeto**.
+
+### A varios (many)
+
+Para trabajar con **relaciones a varios** se usa el objeto especial
+**_Mondongo\Group_** para guardar los documentos referenciados.
+
+Añadiendo y borrando documentos.
+
+    [php]
+    // añadir de uno en uno
+    $article->getCategories()->add($category1);
+    $article->getCategories()->add($category2);
+
+    // añadiendo todos (borra los que existían)
+    $article->getCategories()->setElements(array($category2, $category4, $category6));
+
+    // borrando de uno en uno
+    $article->getCategories()->remove($category4);
+
+    // borrando todos
+    $article->getCategories()->clear();
+
+Asignando un objeto _Mondongo\Group_ directamente.
+
+    [php]
+    $group = new Mondongo\Group(array($category1, $category2));
+
+    $article->setCategories($group);
+
+Trabajando con un objeto _Mondongo\Group_.
+
+    [php]
+    // implementa la interfaz \Countable
+    count($article->getCategories())
+
+    // implementa la interfaz \IteratorAggregate
+    foreach ($article->getCategories() as $category) {
+        // ...
+    }
+
+Embebidos
+---------
+
+Con los embebidos se trabaja igual que con las referencias, salvo que
+**sólo mediante objetos** ya que no tienen id.
+
+### A uno (one)
+
+    [php]
+    // setter
+    $article->setSource($source);
+
+    // getter
+    $source = $article->getSource();
+
+### A varios (many)
+
+    [php]
+    $article->getComments()->add($comment1);
+
+    $article->getComments()->remove($comment1);
+
+    // ...
+
+Relaciones
+----------
+
+A las relaciones **sólo se puede acceder**, y devuelven documento o
+_Mondongo\Group_ dependiendo del tipo.
+
+    [php]
+    // one_one
+    $phonenumber = $author->getPhoenumber(); // document
+
+    // one_many
+    $articles = $authors->getArticles(); // Mondongo\Group
+
+    // many_many
+    $articles = $category->getArticles(); // Mondongo\Group
+
+Guardar y Borrar
+----------------
+
+Para guardar y borrar documentos Mondongo puedes usar los métodos
+**_->save()_** y **_->delete()_** de los documentos.
+
+    [php]
+    // guardar
+    $article->save();
+
+    // borrar
+    $article->delete();
+
+>[CAUTION]
+>Estos métodos **no existen en documentos embebidos**.

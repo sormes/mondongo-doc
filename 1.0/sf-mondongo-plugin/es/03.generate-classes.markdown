@@ -1,0 +1,44 @@
+Generate classes
+================
+
+With the _sfMondongoPlugin_ we can generate the model and the forms
+easily from [YAML](http://www.yaml.org).
+
+For it, we have to configure the classes in _yml_ files inside **config/mondongo**.
+
+    [yml]
+    Article:
+      connection: mondongo
+      collection: articles
+      fields:
+        author_id: id
+        title:     string
+        content:   string
+        is_active: { type: boolean, default: true }
+        source:    { type: string, required: false }
+        date:      date
+      references:
+        author: { class: Author, field: author_id, type: one }
+      indexes:
+        - { fields: { date: 1 } }
+      extensions:
+        - { class: Mondongo\Extension\Extra\Timestampable }
+        - { class: Mondongo\Extension\Extra\Sluggable, options{ from_field: title } }
+
+    Author:
+      fields:
+        name: string
+      embeddeds:
+        phonenumber: { class: Phonenumber, type: one }
+
+    Phonenumber:
+      fields:
+        number: string
+
+And finally we launch the task.
+
+    $ ./symfony mondongo:build
+
+>[NOTE]
+>The task will generate in **lib/model/mondongo** the documents and in
+>**lib/form/mondongo** the forms.

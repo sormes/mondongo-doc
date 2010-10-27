@@ -1,0 +1,163 @@
+Definir Clases
+==============
+
+Las definiciones se usan para indicar intérnamente en las extensiones
+**qué clases se van a generar y cómo serán**.
+
+Clases
+------
+
+Las clases se definen con la clase
+*Mondongo\Mondator\Definition\Definition*.
+
+    [php]
+    use Mondongo\Mondator\Definition\Definition;
+
+    // constructor: clase
+    $definition = new Definition($class);
+
+    // clase
+    $definition->setClass('Model\Document\Article');
+    $class = $definition->getClass();
+
+    // nombre de espacio (sólo devolver) (null si no tiene)
+    $namespace = $definition->getNamespace();
+
+    // nombre de clase (sólo devolver)
+    $className = $definition->getClassName();
+
+    // clase padre
+    $definition->setParentClass('\Model\Document\Base\Article');
+    $parentClass $definition->getParentClass();
+
+    // interfaces
+    $definition->addInterface('\ArrayAccess');
+    $interfaces = $definition->getInterfaces();
+
+    // abstract
+    $definition->setIsAbstract(true);
+    $isAbstract = $definition->getIsAbstract();
+
+    // DocComment
+    $definition->setDocComment(<<<EOF
+    /**
+     * Article Document.
+     */
+    EOF
+    );
+    $docComment = $definition->getDocComment();
+
+### Métodos
+
+Los métodos usan la clase
+*Mondongo\Mondator\Definition\Method*.
+
+    [php]
+    use Mondongo\Mondator\Definition\Method;
+
+    // constructor: visibilidad, nombre, argumentos, código
+    $method = new Method('public', 'myMethod', '$var1, $var2', <<<EOF
+            return \$var1 + \$var2;
+    EOF
+    );
+
+    // visibilidad
+    $method->setVisibility('protected');
+    $visibility = $method->getVisibility();
+
+    // nombre
+    $method->setName('mySumMethod');
+    $name = $method->getName();
+
+    // argumentos
+    $method->setArguments('$sum1, $sum2');
+    $arguments = $method->getArguments();
+
+    // código
+    $method->setCode(<<<EOF
+            return \$sum1 + \$sum2;
+    EOF
+    );
+    $code = $method->getCode();
+
+    // static
+    $method->setIsStatic(true);
+    $isStatic = $method->getIsStatic();
+
+    // abstract
+    $method->setIsAbstract(true);
+    $isAbstract = $method->getIsAbstract();
+
+    // docComment
+    $method->setDocComment(<<<EOF
+        /**
+         * Sum two numbers.
+         *
+         * @param mixed $sum1 The Sum1.
+         * @param mixed $sum2 The Sum2.
+         *
+         * @return mixed The result.
+         */
+    EOF
+    );
+    $docComment = $method->getDocComment();
+
+Los métodos se **asignan a las definiciones**.
+
+    [php]
+    // asignar uno
+    $definition->addMethod($method);
+
+    // asignar todos (borra los que existían)
+    $definition->setMethod(array($method1, $method2));
+
+    // devolver todos
+    $methods = $definition->getMethods();
+
+### Propiedades
+
+Las propiedades usan la clase
+*Mondongo\Mondator\Definition\Property*.
+
+    [php]
+    use Mondongo\Mondator\Definition\Property;
+
+    // constructor: visibilidad, nombre, valor
+    $property = new Property('public', 'myProperty', 'value');
+
+    // visibilidad
+    $property->setVisibility('protected');
+    $visibility = $property->getVisibility();
+
+    // nombre
+    $property->setName('myCustomProperty');
+    $name = $property->getName();
+
+    // value
+    $property->setValue('someValue');
+    $value = $property->getValue();
+
+    // static
+    $property->setIsStatic(true);
+    $isStatic = $property->getIsStatic();
+
+    // docComment
+    $property->setDocComment(<<<EOF
+        /**
+         * MyCustomProperty.
+         */
+    EOF
+    );
+    $docComment = $property->getDocComment();
+
+Las propiedades también se **asignan a las definiciones**.
+
+    [php]
+    // asignar una
+    $definition->addProperty($property);
+
+    // asignar todas (borra las que existían)
+    $defintion->setProperties(array($property1, $property2));
+
+    // devolver todas
+    $properties = $definition->getProperties();

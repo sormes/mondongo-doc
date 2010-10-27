@@ -1,0 +1,99 @@
+Creating Mondongo Extensions
+============================
+
+We call _mondongo extensions_ to the **individual extensions for mondongo documents**.
+
+Through the _mondongo extensions_ you can reuse behaviors and functionalities
+in the mondongo documents.
+
+>[SIDEBAR]
+>Basic things you can do with _mondongo extensions_:
+>
+>  * Modify a connection or collection
+>  * Modify fields, references, embeds and relations of documents (insert, edit, delete)
+>  * Add methods to documents and repositories
+>  * Add events to documents
+
+To create _Mondongo extensions_ you must know how to create **Mondator extensions**, that's why
+I recommend you to read the [Mondator documentation](http://mondongo.es/documentation)
+if you haven't done it yet.
+
+Example: Timestampable
+----------------------
+
+We're going to see the _mondongo extension_ _Timestampable_.
+
+    [php]
+    namespace Mondongo\Extension\Extra;
+
+    use Mondongo\Mondator\Definition\Method;
+    use Mondongo\Mondator\Extension;
+    use Mondongo\Inflector;
+
+    /**
+     * Timestampable.
+     *
+     * @package Mondongo
+     * @author  Pablo Díez Pascual <pablodip@gmail.com>
+     */
+    class Timestampable extends Extension
+    {
+        /**
+         * @inheritdoc
+         */
+        protected function setUp()
+        {
+            $this->addOptions(array(
+                'created_enabled' => true,
+                'created_field'   => 'created_at',
+                'updated_enabled' => true,
+                'updated_field'   => 'updated_at',
+            ));
+        }
+
+        /**
+         * @inheritdoc
+         */
+        protected function doProcess()
+        {
+            /*
+             * Created.
+             */
+            if ($this->getOption('created_enabled')) {
+                // field
+                $field = $this->getOption('created_field');
+                $this->configClass['fields'][$field] = 'date';
+
+                // event
+                $fieldSetter = 'set'.Inflector::camelize($field);
+
+                $method = new Method('protected', 'updateTimestampableCreated', '', <<<EOF
+            \$this->$fieldSetter(new \DateTime());
+    EOF
+                );
+                $this->definitions['document_base']->addMethod($method);
+
+                $this->configClass['extensions_events']['preInsert'][] = $method->getName();
+            }
+
+            /*
+             * Updated.
+             */
+            if ($this->getOption('updated_enabled')) {
+                // field
+                $field = $this->getOption('updated_field');
+                $this->configClass['fields'][$field] = 'date';
+
+                // event
+                $fieldSetter = 'set'.Inflector::camelize($field);
+
+                $method = new Method('protected', 'updateTimestampableUpdated', '', <<<EOF
+            \$this->$fieldSetter(new \DateTime());
+    EOF
+                );
+                $this->definitions['document_base']->addMethod($method);
+
+                $this->configClass['extensions_events']['preUpdate'][] = $method->getName();
+            }
+        }
+    }

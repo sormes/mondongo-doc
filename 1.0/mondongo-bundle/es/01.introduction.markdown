@@ -1,0 +1,52 @@
+Introducción
+============
+
+El **MondongoBundle** es el _Bundle_ para usar Mondongo con
+[Symfony2](http://symfony-reloaded.org/)
+
+Instalación
+-----------
+
+Para usarlo tienes que añadir Mondongo al **_UniversalClassLoader_**.
+
+    [php]
+    $loader->registerNamespace('Mondongo', '/path/to/mondongo/lib');
+
+Activarlo en el Kernel.
+
+    [php]
+    // project/application/ApplicationKernel.php
+
+    public function registerBundles()
+    {
+      return array(
+        // ...
+        new \Bundle\MondongoBundle\MondongoBundle(),
+        // ...
+      );
+    }
+
+Y en la configuración.
+
+    [yml]
+    # application/config/config.yml
+
+    mondongo.config: ~
+
+Configuración
+-------------
+
+Configuración para personalizar clases y añadir conexiones.
+
+    [yml]
+    mondongo.config:
+        class: Mondongo\Mondongo
+        connections:
+            local:
+                server:   mongodb://localhost:27017
+                database: local
+            global:
+                server:   mongodb://localhost:27017
+                database: global
+                options:
+                    persist: 1

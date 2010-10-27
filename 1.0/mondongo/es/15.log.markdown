@@ -1,0 +1,23 @@
+Loguear
+=======
+
+Con Mondongo puedes loguear las **consultas que se realizan a Mongo** para
+mejorar el desarrollo.
+
+Para hacerlo tienes que pasarle un **_PHP callable_** al mondongo.
+
+    [php]
+    use Mondongo\Mondongo;
+
+    $mondongo = new Mondongo();
+
+    // función anónima
+    $mondongo->setLoggerCallable(function(array $log) { print($log); });
+
+    // array
+    $mondongo->setLoggerCallable(array($myLoggerObject, 'log'));
+
+>[NOTE]
+>Esta funcionalidad no tiene **ninguna penalización de rendimiento** en
+>producción, ya que al usarla se usan objetos de colecciones Mongo
+>especiales para loguear, pero cuando no se usa se usan las nativas.

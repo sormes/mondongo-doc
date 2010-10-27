@@ -1,0 +1,62 @@
+Custom Mondongo Types
+=====================
+
+You can use _custom mondongo types_ to accomplish the **mapping of documents**.
+
+To do that you have to create a mondongo type and add it to the Mondongo types container.
+
+Creating custom mondongo types
+------------------------------
+
+A _mondongo type_ is a **class** that inherits from **_Mondongo\Type\Type_**
+and implements its **four abstract methods**.
+
+Let's see an example.
+
+    [php]
+    namespace MyProject\Type;
+
+    use Mondongo\Type\Type;
+
+    class MyType extends Type
+    {
+        public function toMongo($value)
+        {
+            return (string) $value;
+        }
+
+        public function toPHP($value)
+        {
+            return (string) $value;
+        }
+
+        public function toMongoInString()
+        {
+            return '%to% = (string) %from%;';
+        }
+
+        public function toPHPInString()
+        {
+            return '%to% = (string) %from%;';
+        }
+    }
+
+>[SIDEBAR]
+>Four abstract methods
+>
+>  * **toMongo**: convert a PHP value to Mongo
+>  * **toPHP**: convert a Mongo value to PHP
+>  * **toMongoInString**: convert a PHP value to Mongo in string (to generate the classes)
+>  * **toPHPInString**: convert a Mongo value to PHP in string (to generate the classes)
+
+Mondongo types container
+----------------------------
+
+Once we have the type we have to **add it to the Mondongo types container**
+in order to be able to use it.
+
+    [php]
+    Mondongo\Type\Container::addType('my_type', 'MyProject\Type\MyType');
+
+>[NOTE]
+>It is **only** necessary to do it **when the classes are generated**, not when we are using them.

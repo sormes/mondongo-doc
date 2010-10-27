@@ -1,0 +1,34 @@
+Indexes
+=======
+
+In Mondongo you can **map the indexes** and then **synchronize them** easily
+with the database through the repositories.
+
+### Map Indexes
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+                'slug'    => 'string',
+                'date'    => 'date',
+            ),
+            'indexes' => array(
+                // simple
+                array('fields' => array('date' => 1)),
+                // with options
+                array('fields' => array('slug' => 1), 'options' => array('unique' => 1)),
+            ),
+        ),
+    );
+
+### Synchronize Indexes
+
+    [php]
+    $articleRepository->ensureIndexes();
+
+>[NOTE]
+>You can see the [Mongo documentation about indexes](http://www.mongodb.org/display/DOCS/Indexes)
+>for further information.

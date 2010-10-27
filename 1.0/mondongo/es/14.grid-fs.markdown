@@ -1,0 +1,47 @@
+GridFS
+======
+
+Con Mondongo podrás guardar archivos en Mongo usando
+[GridFS](http://www.mongodb.org/display/DOCS/GridFS) mediante los objetos
+[MongoGridFS](http://php.net/manual/en/class.mongogridfs.php) del driver de PHP
+muy fácilmente.
+
+Para ello tienes que mapearlos como archivos.
+
+    [php]
+    array(
+        'Model\Document\Image' => array(
+            'is_file' => true,
+            'fields' => array(
+                'name' => 'string',
+            ),
+        ),
+    );
+
+Al hacerlo se añade automáticamente el campo **file**, que es en el que se
+guarda el archivo.
+
+    [php]
+    use Model\Document\Image;
+
+    $image = new Image();
+
+    // como archivo
+    $image->setFile('/path/to/file');
+
+    // como bytes
+    $image->setFile(file_get_contents('/path/to/file'));
+
+    $image->save();
+
+>[CAUTION]
+>El archivo **no puede actualizarse**. El resto de campos mapeados si.
+
+Y para recuperarlos se trabaja igual.
+
+    [php]
+    $image = $imageRepository->findOne();
+
+    $image->getFile() // MongoGridFSFile
+
+    $bytes = $image->getFile()->getBytes();

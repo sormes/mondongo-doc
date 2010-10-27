@@ -1,0 +1,126 @@
+Usage
+=====
+
+Mondator uses **classes configurations** and **extensions** to generate the 
+classes. The classes configurations have the information about themselves, and
+the extensions process those data and indicate which classes have to be generated,
+where and how they must be.
+
+Mondator is **extremely flexible**, because the classes that are generated from
+the classes configurations depend on the extensions that you've assigned them.
+
+A simple example
+----------------
+
+We are going to do a **simple example** with Mondator **using Mondongo**, this way you'll
+see **step by step** what you'll have to do to use it and
+**you'll understand how it works**.
+
+### Create a Mondator.
+
+    [php]
+    $mondator = new Mondongo\Mondator\Mondator();
+
+### Assign the Classes Configurations.
+
+The classes configurations contain the **information** of the classes.
+
+    [php]
+    $mondator->setConfigClasses(array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+        ),
+    ));
+
+>[TIP]
+>You can use a language like [YAML](http://www.yaml.org) to work
+>**easily** with the classes configurations.
+
+### Assign the extensions
+
+The extensions are the ones ordered to **process the classes configurations** and
+**generate definitions and classes outputs**. The definitions indicate which
+classes will be generated, and the outputs where they will be generated.
+
+The **order** in which the extensions are assigned is the order in which they are processed, 
+so it is very important that it is the right order.
+
+The extensions also accept **options** to be able to
+**customize its operation**.
+
+    [php]
+    $mondator->setExtensions(array(
+        new Mondongo\Extension\Core(array(
+            'default_document_output'   => '/path/to/Model/Document',
+            'default_repository_output' => '/path/to/Model/Repository',
+        )),
+    ));
+
+>[TIP]
+>Adding **more extensions** you'll be able to **customize** the documents and
+>repositories as much as you want.
+
+### Process
+
+Once you've assigned the configurations to classes and extensions, you only have to
+**process theMondator** to **generate the files of each classes**.
+
+    [php]
+    $mondator->process();
+
+A full example
+------------------
+
+Let's see a **full example**, which you can use to **start trying Mondongo**.
+
+    [php]
+    $mondongoLibDir = '/path/to/mondongo/lib';
+    $modelDir       = '/path/to/Model';
+
+    // classes loader
+    require_once($mondongoLibDir.'/vendor/symfony/src/Symony/Component/HttpFoundation/UniversalClassLoader.php');
+
+    $loader = new \Symfony\Comopnent\HttpFoundation\UniversalClassLoader();
+    $loader->registerNamespaces(array(
+        'Mondongo' => $mondongoLibDir,
+        'Model'    => dirname($modelDir),
+    ));
+
+    // load Mondator classes
+    use Mondongo\Mondator\Mondator;
+    use Mondongo\Mondator\Output;
+
+    // start Mondator
+    $mondator = new Mondator();
+
+    // asignar configuraciones de clases
+    $mondator->setConfigClasses(array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+        ),
+    ));
+
+    // assign extensions
+    $mondator->setExtensions(array(
+        new Mondongo\Extension\Core(array(
+            'default_document_output'   => $modelDir.'/Document',
+            'default_repository_output' => $modelDir.'/Repository',
+        )),
+    ));
+
+    // process
+    $mondator->process();
+
+If you look at the generated files, you'll see that there are **empty** document classes and
+repositories that you can **customize**, and others **Base**
+that **you mustn't touch** because they are **overwritten** everytime the Mondator is processed.
+
+>[NOTE]
+>If you want to know more about **Mondongo** you can browse its
+>[documentation](http://mondongo.es/documentation).

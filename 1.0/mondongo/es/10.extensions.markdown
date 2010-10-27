@@ -1,0 +1,205 @@
+Extensiones
+===========
+
+Las extensiones te permiten **añadir funcionalidades** a documentos y
+repositorios de una manera **extremádamente flexible**.
+
+Además es **muy entretenido y sencillo**. Veámoslo.
+
+Extensiones Mondongo
+--------------------
+
+Mondongo viene por defecto con **cinco extensiones** además del *Core*.
+
+### DocumentFromToArray
+
+La extensión _DocumentFromToArray_ te permite **importar y exportar** los
+datos de tus documentos desde y hacia un **array**.
+
+Añadimos la extensión a Mondator.
+
+    [php]
+    $mondator->setExtensions(array(
+        new Mondongo\Extension\Core(),
+        new Mondongo\Extension\DocumentFromToArray(),
+    ));
+
+La usamos en nuestros documentos.
+
+    [php]
+    use Model\Document\Article;
+
+    $article = new Article();
+
+    $article->fromArray(array(
+        'title'   => 'Mondongo',
+        'content' => 'Content',
+    ));
+
+    echo $article->getTitle();   // Mondongo
+    echo $article->getContent(); // Content
+
+    print_r($article->toArray());
+
+    /*
+    Array
+    (
+        [title] => Mondongo
+        [content] => Content
+    )
+    */
+
+>[NOTE]
+>Si miras los **documentos base** verás cómo añadiendo la extensión se
+>implementan los métodos.
+
+### DocumentDataCamelCaseMap
+
+La extensión _DocumentDataCamelCaseMap_ añade un mapa _CamelCase_ de los
+nombres de datos de los documentos.
+
+Añadimos la extensión a Mondator.
+
+    [php]
+    $mondator->setExtensions(array(
+        new Mondongo\Extension\Core(),
+        new Mondongo\Extension\DocumentDataCamelCaseMap(),
+    ));
+
+La usamos en nuestros documentos.
+
+    [php]
+    use Model\Document\Article;
+
+    Article::getDataCamelCaseMap();
+
+    /*
+    Array
+    (
+        [title] => Title
+        [content] => Content
+        [is_active] => IsActive
+    )
+    */
+
+### DocumentArrayAccess
+
+La extensión _DocumentArrayAccess_ añade la interfaz **\ArrayAccess** a los
+documentos, para trabajar con ellos **como arrays**.
+
+Depende de la extensión _DocumentDataCamelCaseMap_.
+
+Añadimos la extensión a Mondator.
+
+    [php]
+    $mondator->setExtensions(array(
+        new Mondongo\Extension\Core(),
+        new Mondongo\Extension\DocumentDataCamelCaseMap(),
+        new Mondongo\Extension\DocumentArrayAccess(),
+    ));
+
+La usamos en nuestros documentos.
+
+    [php]
+    use Model\Document\Article;
+
+    $article = new Article();
+    $article['title'] = 'Mondongo';
+
+    echo $article['title']; // Mondongo
+
+### DocumentPropertyOverloading
+
+Con la extensión _DocumentPropertyOverloading_ podrás trabajar con tus
+documentos por **sobrecarga**.
+
+Depende de la extensión _DocumentDataCamelCaseMap_.
+
+Añadimos la extensión a Mondator.
+
+    [php]
+    $mondator->setExtensions(array(
+        new Mondongo\Extension\Core(),
+        new Mondongo\Extension\DocumentDataCamelCaseMap(),
+        new Mondongo\Extension\DocumentPropertyOverloading(),
+    ));
+
+La usamos en nuestros documentos.
+
+    [php]
+    use Model\Document\Article;
+
+    $article = new Article();
+    $article->title = 'Mondongo';
+
+    echo $article->title; // Mondongo
+
+### DocumentDataMap
+
+La extensión _DocumentDataMap_ añade una función para obtener el mapeado de
+los datos del documento.
+
+Añadimos la extensión a Mondator.
+
+    [php]
+    $mondator->setExtensions(array(
+        new Mondongo\Extension\Core(),
+        new Mondongo\Extension\DocumentDataMap(),
+    ));
+
+La usamos en nuestros documentos.
+
+    [php]
+    use Model\Document\Article;
+
+    Article::getDataMap();
+
+    /*
+    Array
+    (
+        [fields] => Array
+            (
+                [author_id] => Array
+                    (
+                        [type] => reference_one
+                    )
+
+                [title] => Array
+                    (
+                        [type] => string
+                    )
+
+                [content] => Array
+                    (
+                        [type] => string
+                    )
+
+                [is_active] => Array
+                    (
+                        [type] => boolean
+                        [default] => 1
+                    )
+
+            )
+
+        [references] => Array
+            (
+                [author] => Array
+                    (
+                        [class] => Model\Document\Author
+                        [field] => author_id
+                        [type] => one
+                    )
+
+            )
+
+        [embeddeds] => Array
+            (
+            )
+
+        [relations] => Array
+            (
+            )
+
+    )
+    */

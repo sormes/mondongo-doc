@@ -1,0 +1,6 @@
+Indexes
+=======
+
+You can easily synchronize all the indexes of the model.
+
+    $ ./symfony mondongo:ensure-indexes

@@ -1,0 +1,78 @@
+Translator
+==========
+
+The _Translator_ extension allows to work with field translations of the documents very easily.
+
+What it does internally is to store the embedded documents in those fields, along with 
+a **locale** field that indicates the language.
+
+Configuration
+-------------
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'     => 'string',
+                'content'   => 'string',
+                'is_active' => 'boolean',
+            ),
+            'extensions' => array(
+                array('class' => 'Mondongo\Extension\Extra\Translation', 'options' => array('fields' => array('title', 'content'))),
+            ),
+        ),
+    );
+
+>[SIDEBAR]
+>Options
+>
+>  * **fields** fields to translate (required)
+
+Usage
+-----
+
+While working with embedded documents, when we use the extension, the 
+embedded document **_%class%Translation_** is created automatically.
+
+    [php]
+    use Model\Document\Article;
+
+    $article = new Article();
+    $article->setIsActive(true);
+
+    // the fields to translate doesn't exist in the document
+    $article->getTitle(); // ¡breaks!
+    $article->getContent(); // ¡breaks!
+
+    // embedded documents creation for translating
+    $article->translation($locale);
+
+    $article->translation('en')->setTitle('Title');
+    $article->translation('es')->setTitle('Título');
+
+    $article->save();
+
+    print_r($article->toArray());
+
+    /*
+    Array
+    (
+        [is_active] => 1
+        [translations] => Array
+            (
+                [0] => Array
+                    (
+                        [locale] => en
+                        [title] => Title
+                    )
+
+                [1] => Array
+                    (
+                        [locale] => es
+                        [title] => Título
+                    )
+
+            )
+
+    )
+    */

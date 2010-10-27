@@ -1,0 +1,99 @@
+Extensiones
+===========
+
+Las **extensiones** son las encargadas de indicar, a partir de las
+configuraciones de clases, **qué clases** se generarán, **cómo serán**, y
+**dónde lo harán**. Esto se realiza a través de las definiciones y salidas que
+ya hemos visto.
+
+Crear Extensiones
+-----------------
+
+Las extensiones son clases que heredan de **_Mondongo\Mondator\Extension_** e
+implementan el método protegido **_->doProcess()_**.
+
+El método _->doProcess()_ es el lugar donde se procesan las configuraciones de
+clases y se crean o modifican definiciones y/o salidas. El procesado de las
+configuraciones de clases se realiza **de uno en uno**.
+
+>[SIDEBAR]
+>Variables de las clases al procesarlas
+>
+>  * **$this->class**: nombre de la clase
+>  * **$this->configClass**: datos de la clase
+>  * **$this->container**: contenedor general
+>  * **$this->definitions**: contenedor de definiciones (acceso rápido al general)
+>  * **$this->outputs**: contenedor de salidas (acceso rápido al general)
+
+Las extensiones también **aceptan opciones** para poder personalizar su
+funcionamiento. Las opciones se añaden en el método protegido **_->setup()_**,
+y pueden ser obligatorias u opcionales.
+
+>[SIDEBAR]
+>Métodos para añadir opciones
+>
+>  * **$this->addRequiredOption($name)**: añade una opción obligatoria
+>  * **$this->addOption($name, $defaultValue)**: añade una opción opcional
+>  * **$this->addRequiredOptions($options)**: añade varias opciones obligatorias (nombre como valor)
+>  * **$this->addOptions($options)**: añade varias opciones opcionales (nombre como clave y valor por defecto como valor)
+
+### Ejemplo
+
+Vamos a hacer un ejemplo que crea definiciones de **document** y
+**document_base**, una hereda de la otra, y añada a la base propiedades,
+setters y getters de los *fields* que tengan las configuraciones de clases.
+
+    [php]
+    namespace MyProject\Extension;
+
+    use Mondongo\Mondator\Extension;
+    use Mondongo\Mondator\Definition\Property;
+    use Mondongo\Mondator\Definition\Method;
+    use Mondongo\Mondator\Output\Output;
+    use Mondongo\Inflector;
+
+    class DocumentExtension extends Extension
+    {
+        protected method setup()
+        {
+            $this->addRequiredOption('output');
+            $this->addOption('process_fields', true);
+        }
+
+        protected method doProcess()
+        {
+            // document
+            $this->definitions['document'] = new Definition($this->class);
+            $this->definitions['document']->setParentClass($this->class.'Base');
+
+            $this->outputs['document'] = new Output($this->getOption('output').'/'.$this->definitions['document']->getClassName().'.php');
+
+            // document_base
+            $this->definitions['document_base'] = new Definition($this->class.'Base');
+            $this->definitions['document_base']->setIsAbstract(true);
+
+            $this->outputs['document_base'] = new Output($this->getOption('output').'/'.$this->definitions['document_base']->getClassName().'.php');
+
+            // fields
+            if ($this->getOption('process_fields')) {
+                if (isset($this->configClass['fields'])) {
+                    foreach ($this->configClass['fields'] as $name)
+                    {
+                        // property
+                        $property = new Property('protected', $name, null);
+                        $this->container['document_base']->addProperty($property);
+
+                        // setter
+                        $code   = "        \$this->$name = \$value;";
+                        $method = new Method('public', 'set'.Inflector::camelize($name), '$value', $code);
+                        $this->container['document_base']->addMethod($method);
+
+                        // getter
+                        $code   = "        return \$this->$name;";
+                        $method = new Method('public', 'get'.Inflector::camelize($name), '', $code);
+                        $this->container['document_base']->addMethod($method);
+                    }
+                }
+            }
+        }
+    }

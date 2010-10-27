@@ -1,0 +1,17 @@
+Outputs
+=======
+
+The outputs are used to indicate the output file of the classes and if they are overwritten or not.
+
+    [php]
+    use Mondongo\Mondator\Output\Output;
+
+    // without overwriting
+    $output = new Output('/path/to/my/project/Model/Document/Article.php');
+
+    // overwriting (true as second argument)
+    $output = new Output('/path/to/my/project/Model/Document/Base/Article.php', true);
+
+>[NOTE]
+>If it is overwritten or not depends if the user is going to customize
+>the class, so the changes made are not lost.

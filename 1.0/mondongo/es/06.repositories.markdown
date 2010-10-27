@@ -1,0 +1,87 @@
+Repositorios
+============
+
+Los repositorios realizan **funciones generales de documentos**.
+
+Se obtienen mediante el Mondongo indicando la clase del documento del que se
+quiere el repositorio.
+
+    [php]
+    $articleRepository = $mondongo->getRepository('Model\Document\Article');
+    $authorRepository  = $mondongo->getRepository('Model\Document\Author');
+
+>[NOTE]
+>Los documentos embebidos no tienen repositorios.
+
+Guardar Documentos
+------------------
+
+Para guardar documentos también puedes usar el método **_->save()_** de los
+repositorios, que es el que usa internamente el método _->save()_ de los
+documentos.
+
+    [php]
+    // guardando un documento
+    $articleRepository->save($article);
+
+    // guardando varios documentos
+    $articleRepository->save(array($article1, $article2));
+
+>[NOTE]
+>Para insertar documentos se usa el método
+>[batchInsert](http://www.php.net/manual/en/mongocollection.batchinsert.php),
+>y para actualizarlos se usan
+>[operaciones atómicas](http://www.mongodb.org/display/DOCS/Atomic+Operations),
+>por lo que ambas funciones se hacen de una manera **muy eficiente**.
+
+También existe un **acceso desde el Mondongo** indicando la clase del
+documento.
+
+    [php]
+    // acceso desde el Mondongo
+    $mondongo->save('Model\Document\Article', $article);
+
+>[TIP]
+>Insertar documentos desde el repositorio es **muy útil** cuando se tienen que
+>insertar **varios documentos**. De esta manera se realiza toda la operación en
+>el mismo **batchInsert**.
+
+Borrar Documentos
+-----------------
+
+Para borrar documentos también puedes usar el método **_->delete()_** de los
+repositorios, que es el que usa internamente el método _->delete()_ de los
+documentos.
+
+    [php]
+    // borrando un documento
+    $articleRepository->delete($article);
+
+    // borrando varios documentos
+    $articleRepository->delete(array($article1, $article2));
+
+    // acceso desde el Mondongo
+    $mondongo->delete('Model\Document\Article', array($article1, $article2));
+
+>[NOTE]
+>También es muy útil **borrar muchos documentos** desde el repositorio, ya que
+>se usa el operador
+>[$in](http://www.mongodb.org/display/DOCS/Advanced+Queries#AdvancedQueries-%24in).
+
+Conexión
+--------
+
+Puedes obtener la **conexión Mondongo** de los documentos desde el repositorio
+mediante el método **_->getConnection()_**.
+
+    [php]
+    $connection = $articleRepository->getConnection();
+
+Colección
+---------
+
+También puedes obtener la **colección Mongo** para hacer operaciones directamente
+mediante el método **_->getConnection()_**.
+
+    [php]
+    $collection = $articleRepository->getCollection();

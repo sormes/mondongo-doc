@@ -1,0 +1,277 @@
+Mapear Documentos
+=================
+
+El **mapeado** de los documentos en Mondongo se realiza en las
+**configuraciones de clases** de Mondator.
+
+Conexión
+--------
+
+Puedes definir **explícitamente** la conexión de los documentos. Sino se hace
+Mondongo usa la conexión **por defecto**.
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            // definiendo explícitamente la conexión
+            'connection' => 'global',
+            'fields' => array(
+                'title' => 'string',
+            ),
+        ),
+    );
+
+>[NOTE]
+>Para especificar las conexiones se usan los **nombres de conexiones** que
+>se asignan al Mondongo.
+
+Colección
+---------
+
+Puedes definir también **explícitamente** la colección de la base de datos
+usada en el documento. Sino se especifica Mondongo usa el
+[CamelCase](http://en.wikipedia.org/wiki/CamelCase) del nombre de las clases.
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            // definiendo explícitamente la colección
+            'collection' => 'articulos',
+            'fields' => array(
+                'title' => 'string',
+            ),
+        ),
+    );
+
+Tipos Mondongo
+--------------
+
+Los Tipos Mondongo permiten **mapear datos entre PHP y Mongo**.
+
+>[SIDEBAR]
+>Tipos Mondongo
+>
+>  * **array** (arrays serializados)
+>  * **bin_data** (para archivos de hasta 4Mb)
+>  * **boolean** (booleanos)
+>  * **date** (fechas)
+>  * **float** (números flotantes)
+>  * **integer** (enteros)
+>  * **raw** (sin procesar)
+>  * **reference_one** (para referencias a uno)
+>  * **reference_many** (para referencias a varios)
+>  * **string** (cadenas)
+
+También puedes añadir **Tipos Mondongo Personalizados**. Más adelante veremos cómo.
+
+Campos
+------
+
+Los campos son los **datos de los documentos**, igual que en Mongo.
+
+Para definir los campos sólo tienes que indicar el **tipo** y, si quieres, más
+**opciones**. Mondongo permite la opción **_default_** para asignar un valor por
+defecto.
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                // como cadena
+                'title' => 'string',
+                // como array
+                'content' => array('type' => 'string'),
+                // como array indicando más opciones
+                'is_active' => array('type' => 'boolean', 'default' => false),
+            ),
+        ),
+    );
+
+>[NOTE]
+>Mongo permite un _esquema libre_, pero para mapear los documentos con Mondongo
+>**debes especificar los campos** que usarás.
+
+Referencias
+-----------
+
+Las referencias son **relaciones hacia otros documentos**. MongoDB no
+permite joins ni claves foráneas, pero puedes guardar referencias hacia
+otros documentos y luego consultarlos. Mondongo te permite hacerlo
+muy fácilmente.
+
+Para mapear referencias tienes que definir
+**la referencia y el campo que referencia**.
+
+>[SIDEBAR]
+>Tipos de Referencias
+>
+>Hay dos tipos de referencias, los cuales varían en el número de documentos
+>a los que se va a referenciar.
+>
+>  * uno (**one**)
+>  * varios (**many**)
+>
+>El campo que referencia tiene que ser del tipo **reference_one** o
+>**reference_many** según el tipo de la referencia.
+
+En la referencia tienes que indicar:
+
+  * El **nombre** de la referencia.
+  * La **clase** a la que se referencia.
+  * El **campo que referencia**.
+  * El **tipo** de referencia.
+
+Veamos unos ejemplos.
+
+    [php]
+    array(
+        'Model\Document\Author' => array(
+            'fields' => array(
+                'name' => 'string',
+            ),
+        ),
+        'Model\Document\Category' => array(
+            'fields' => array(
+                'name' => 'string',
+            ),
+        ),
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'        => 'string',
+                'content'      => 'string',
+                'author_id'    => 'reference_one',
+                'category_ids' => 'reference_many',
+            ),
+            'references' => array(
+                // a uno
+                'author' => array('class' => 'Model\Document\Author', 'field' => 'author_id', 'type' => 'one'),
+                // a varios
+                'categories' => array('class' => 'Model\Document\Category', 'field' => 'category_ids', 'type' => 'many'),
+            ),
+        ),
+    );
+
+>[NOTE]
+>Debes indicar la **clase completa**.
+
+Embebidos
+---------
+
+Los **documentos embebidos** son documentos **dentro** de otros documentos.
+
+>[SIDEBAR]
+>Tipos de Embebidos
+>
+>Existen dos tipos de embebidos, que varían según el número de documentos que
+>vayan a embeber.
+>
+>  * uno (**one**)
+>  * varios (**many**)
+
+En los embebidos tienes que indicar:
+
+  * El **nombre** del embebido.
+  * La **clase** que se embebe.
+  * El **tipo** de embebido.
+
+Se mapean igual que los documentos normales, simplemente tienes que indicar que
+es un documento embebido activando la opción **_is_embedded_**.
+
+    [php]
+    array(
+        'Model\Document\Comment' => array(
+            'is_embedded' => true,
+            'fields' => array(
+                'name' => 'string',
+                'text' => 'string',
+            ),
+        ),
+        'Model\Document\Source' => array(
+            'is_embedded' => true,
+            'fields' => array(
+                'name' => 'string',
+                'url'  => 'string',
+            ),
+        ),
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+            'embeddeds' => array(
+                'source'   => array('class' => 'Model\Document\Source', 'type' => 'one'),
+                'comments' => array('class' => 'Model\Document\Comment', 'type' => 'many'),
+            ),
+        ),
+    );
+
+>[TIP]
+>Mondongo puede manejar documentos **embebidos múltiples**, es decir, embeber
+>dentro de embebidos.
+
+Relaciones
+----------
+
+Las relaciones son **relaciones desde otros documentos**. Son lo opuesto a las
+referencias.
+
+>[SIDEBAR]
+>Tipos de Relaciones
+>
+>  * uno (**one**)
+>  * varios (**many**)
+
+En las relaciones tienes que indicar:
+
+  * El **nombre** de la relación.
+  * La **clase** que se relaciona.
+  * El **tipo** de relación
+
+Veamos unos ejemplos.
+
+    [php]
+    array(
+        'Model\Document\Author' => array(
+            'fields' => array(
+                'name' => 'string',
+            ),
+            'relations' => array(
+                // a uno
+                'phonenumber' => array('class' => 'Model\Document\PhoneNumber', 'type' => 'one'),
+                // a varios
+                'articles' => array('class' => 'Model\Document\Article', 'type' => 'many'),
+            ),
+        ),
+        'Model\Document\PhoneNumber' => array(
+            'fields' => array(
+                'author_id' => 'reference_one',
+            ),
+            'references' => array(
+                'author' => array('class' => 'Model\Document\Author', 'field' => 'author_id', 'type' => 'one'),
+            ),
+        ),
+        'Model\Document\Category' => array(
+            'fields' => array(
+                'name' => 'string',
+            ),
+            'relations' => array(
+                // a varios
+                'articles' => array('class' => 'Model\Document\Article', 'type' => 'many'),
+            ),
+        ),
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'        => 'string',
+                'content'      => 'string',
+                'author_id'    => 'reference_one',
+                'category_ids' => 'reference_many',
+            ),
+            'references' => array(
+                'author' => array('class' => 'Model\Document\Author', 'field' => 'author_id', 'type' => 'one'),
+                'categories' => array('class' => 'Model\Document\Category', 'field' => 'category_ids', 'type' => 'many'),
+            ),
+        ),
+    );
+
+>[CAUTION]
+>Las relaciones **no pueden usarse en documentos embebidos**.

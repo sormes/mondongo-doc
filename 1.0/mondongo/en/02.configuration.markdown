@@ -1,0 +1,98 @@
+Configuration
+=============
+
+Classes loader
+--------------
+
+Mondongo uses **namespaces and class names**
+[standards in PHP 5.3](http://groups.google.com/group/php-standards/web/psr-0-final-proposal),
+and includes the **UniversalClassLoader** of *Symfony2*.
+
+    [php]
+    require('/path/to/mondongo/lib/vendor/symfony/src/Symfony/Component/HttpFoundation/UniversalClassLoader.php');
+
+    $loader = new \Symfony\Comopnent\HttpFoundation\UniversalClassLoader();
+    $loader->registerNamespace('Mondongo', '/path/to/mondongo/lib');
+    $loader->register();
+
+>[TIP]
+>You can use **any class loader** that implments the standards 
+>in PHP 5.3.
+
+THe Mondongo
+-----------
+
+To use Mondongo you have to create a **Mondongo object**, assign it any
+**connection** and assign it as default in the **container of mondongos**.
+
+    [php]
+    use Mondongo\Mondongo;
+    use Mondongo\Connection;
+    use Mondongo\Container;
+
+    $mondongo = new Mondongo();
+    $mondongo->setConnection('my_connection', new Connection('mongodb://localhost:27017', 'database'));
+
+    Container::setDefault($mondongo);
+
+>[NOTE]
+>The **first connection** that is assigned to the Mondongo is the 
+>**default connection**.
+
+Connections
+-----------
+
+With Mondongo you can use the number of connections you want. They are 
+**lazy**, so they only connect to the server when they are going to be used.
+
+    [php]
+    use Mondongo\Mondongo;
+    use Mondongo\Connection;
+
+    // assigning several connections
+    $mondongo = new Mondongo();
+    $mondongo->setConnections(array(
+        'local'  => new Connection('mongodb://localhost:27017', 'local');
+        'global' => new Connection('mongodb://localhost:27017', 'global'),
+    ));
+
+### Options
+
+You can also pass as a third parameter the **options** in the connection.
+
+    [php]
+    use Mondongo\Connection;
+
+    $connection = new Connection('mongodb://localhost:27017', 'database', array(
+        'persistent' => true,
+    ));
+
+>[NOTE]
+>You can see **all the options** that you can use in the **connections** in the
+>[MongoDB documentation in PHP](http://www.php.net/manual/en/mongo.construct.php).
+
+Mondongos Container
+-------------------
+
+The Mondongos container is **where the Mondongo objects are stored** to be
+used by the documents.
+
+You can assign them explicitly by classnames of documents and/or
+assign one by default so the documents that don't have any assigned use it.
+
+    [php]
+    use Mondongo\Mondongo;
+    use Mondongo\Container;
+
+    $mondongo1 = new Mondongo();
+    $mondongo2 = new Mondongo();
+
+    Container::setDefault($mondongo1);
+    Container::setForDocumentClass('Article', $mondongo2);
+
+    $mondongo = Container::getDefault();                   // mondongo1
+    $mondongo = Container::getForDocumentClass('Author');  // mondongo1
+    $mondongo = Container::getForDocumentClass('Article'); // mondongo2
+
+>[NOTE]
+>For almost all the cases is **enough** with a **single Mondongo**.

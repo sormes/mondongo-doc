@@ -1,0 +1,61 @@
+Introducción
+============
+
+Las **Mondongo Extensiones Extra** son extensiones oficiales para usar
+en documentos Mondongo.
+
+>[SIDEBAR]
+>Extensiones
+>
+>  * **Timestampable**: guarda la fecha de creación y/o actualización en los documentos
+>  * **Ipable**: guarda la ip desde donde se crean y/o actualizan los documentos
+>  * **Sluggable**: guarda el _slug_ de algún campo en los documentos
+>  * **IdentifierAutoIncremente**: añade un campo identificador a los documentos que se va autoincrementando
+>  * **Translation**: permite traducir campos en los documentos
+
+Instalación
+-----------
+
+Puedes instalarlas **directamente**, por **git**, **svn** o **PEAR**.
+
+### Directamente
+
+Puedes bajar directamente las librerías en
+[tar](http://github.com/mondongo/mondongo-extensions-extra/tarball/master)
+o en
+[zip](http://github.com/mondongo/mondongo-extensions-extra/zipball/master).
+
+### Git
+
+El repositorio oficial de las _Mondongo Extensiones Extra_ es
+[http://github.com/mondongo/mondongo-extensions-extra](http://github.com/mondongo/mondongo-extensions-extra).
+
+### Subversion
+
+Existe acceso mediante Subversion al repositorio Git, en
+http://svn.github.com/mondongo/mondongo-extensions-extra
+
+### PEAR
+
+[Mondongo PEAR Channel](http://pear.mondongo.es/)
+
+    $ pear channel-discover pear.mondongo.es
+    $ pear install mondongo/MondongoExtensionsExtra-beta
+
+Configuración
+-------------
+
+Las _Mondongo Extensions Extra_ usan, como Mondongo,
+**nombres de espacio y de clases**
+[estándares en PHP 5.3](http://groups.google.com/group/php-standards/web/psr-0-final-proposal),
+por lo que pueden usarse con cualquier cargador que los implemente.
+
+    [php]
+    require('/path/to/mondongo/lib/vendor/symfony/src/Symfony/Component/HttpFoundation/UniversalClassLoader.php');
+
+    $loader = new \Symfony\Comopnent\HttpFoundation\UniversalClassLoader();
+    $loader->registerNamespaces(array(
+        'Mondongo\\Extension\\Extra' => '/path/to/mondongo-extensions-extra/lib',
+        'Mondongo'                   => '/path/to/mondongo/lib',
+    ));
+    $loader->register();

@@ -1,0 +1,47 @@
+Sluggable
+=========
+
+La extensión _Sluggable_ guarda el slug de algún campo en otro.
+
+Configuración
+-------------
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+            'extensions' => array(
+                array('class' => 'Mondongo\Extension\Extra\Sluggable', options' => array('from_field' => 'title')),
+            ),
+        ),
+    );
+
+>[SIDEBAR]
+>Opciones
+>
+>  * **from_field**: campo desde donde se crea el slug (requerida)
+>  * **slug_field**: campo en el que se guarda el slug (_slug_ por defecto)
+>  * **unique**: si los slugs tienen que se únicos (activado por defecto) (si está activado se crea un índice único)
+>  * **update**: si actualizar los slugs cuando cambia el campo desde donde se crea el slug (desactivado por defecto)
+>  * **builder**: función que transforma la cadena base a slug (_Mondongo\Extension\Extra\Sluggable::slugify()_ por defecto)
+
+Uso
+---
+
+    [php]
+    use Model\Document\Article;
+
+    $article = new Article();
+    $article->setTitle('Mondongo is ultrafast!');
+    $article->save();
+
+    echo $article->getSlug(); // mondongo-is-ultrafast
+
+    $article2 = new Article();
+    $article2->setTitle('Mondongo is ultrafast!');
+    $article2->save();
+
+    echo $article2->getSlug(); // mondongo-is-ultrafast-2

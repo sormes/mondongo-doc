@@ -1,0 +1,62 @@
+Independent Extensions
+==========================
+
+The _independent extensions_ are one of the most **incredible powerful** parts
+of Mondator (and in turn of Mondongo).
+
+With them you can customize classes regardless, with the very great advantage that it carries.
+
+Let's see an example.
+
+Generating.
+
+    [php]
+    $mondator->setConfigClasses(array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+            'extensions' => array(
+                'Mondongo\Extension\DocumentDataCamelCaseMap',
+                'Mondongo\Extension\DocumentArrayAccess',
+            ),
+        ),
+        'Model\Document\Author' => array(
+            'fields' => array(
+                'name' => 'string',
+            ),
+        ),
+    ));
+
+And using.
+
+    [php]
+    use Model\Document\Article;
+    use Model\Document\Author;
+
+    $article = new Article();
+    $article['title'] = 'Mondongo'; // ok
+
+    $author = new Author();
+    $author['name'] = 'Pablo'; // ¡breaks!
+
+>[NOTE]
+>If you want to know independent extensions **official and very useful**, visit
+>the [Mondongo Extensions Extra](http://mondongo.es/documentation).
+
+By default
+----------
+
+You can also add independent extensions by default, so that all our documents have them.
+
+For example, we want to make all our documents _timestampables_.
+
+    [php]
+    $mondator->setExtensions(array(
+        new \Mondongo\Extension\Core(array(
+            'default_extensions' => array(
+                array('class' => 'Mondongo\Extension\Extra\Timestampable'),
+            ),
+        )),
+    ));

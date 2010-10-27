@@ -1,0 +1,39 @@
+Introducción
+============
+
+Mondator es un sencillo y flexible **generador de clases** para PHP.
+
+Requisitos
+----------
+
+Mondator requiere **PHP 5.3.0** o superior.
+
+Instalación
+-----------
+
+Mondator viene incluido en **Mondongo**, por lo que para usarlo tienes que
+instalar Mondongo.
+
+Puedes hacerlo bajándolo **directamente**, por **git**, **svn** o
+**PEAR**. Para más información visita la
+[página de instalación de Mondongo](http://mondongo.es/installation).
+
+Cargador de Clases
+------------------
+
+Mondator usa **nombres de espacio y de clases**
+[estándares en PHP 5.3](http://groups.google.com/group/php-standards/web/psr-0-final-proposal),
+igual que Mondongo.
+
+Mondongo incluye el **UniversalClassLoader** de *Symfony2*.
+
+    [php]
+    require('/path/to/mondongo/lib/vendor/symfony/src/Symfony/Component/HttpFoundation/UniversalClassLoader.php');
+
+    $loader = new \Symfony\Comopnent\HttpFoundation\UniversalClassLoader();
+    $loader->registerNamespace('Mondongo', '/path/to/mondongo/lib');
+    $loader->register();
+
+>[TIP]
+>Puedes usar **cualquier cargador de clases** que implemente los estándares
+>en PHP 5.3.

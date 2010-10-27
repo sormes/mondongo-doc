@@ -1,0 +1,22 @@
+Logging
+=======
+
+With Mondongo you can log the **queries that are sent to Mongo** to improve the development.
+
+To do it you have to pass a **_PHP callable_** to the mondongo.
+
+    [php]
+    use Mondongo\Mondongo;
+
+    $mondongo = new Mondongo();
+
+    // anonymous function
+    $mondongo->setLoggerCallable(function(array $log) { print($log); });
+
+    // array
+    $mondongo->setLoggerCallable(array($myLoggerObject, 'log'));
+
+>[NOTE]
+>This functionality doesn't have **any penalty in performance** in production,
+>since when it's used it's done with Mongo collection objects
+>special for logging, but when it's not used instead it's used the native ones.

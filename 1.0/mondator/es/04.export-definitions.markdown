@@ -1,0 +1,22 @@
+Exportar Definiciones
+=====================
+
+Para exportar definiciones se usa el **Mondator Dumper**.
+
+El Mondator Dumper vuelca en una cadena el **código PHP de la clase** de
+una definición. Este código PHP se genera según las opciones de la definición y
+los métodos y propiedades que tiene.
+
+    [php]
+    use Mondongo\Mondator\Dumper;
+
+    // constructor: definición
+    $dumper = new Dumper($definition);
+
+    $classCode = $dumper->dump();
+
+Luego puedes usar el código de la clase como quieras, escribiéndolo en un
+archivo por ejemplo.
+
+    [php]
+    file_put_contents($file, $classCode);

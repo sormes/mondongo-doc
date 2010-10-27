@@ -1,0 +1,84 @@
+Containers
+==========
+
+In Mondator there are three containers: of definitions, of outputs and general.
+
+Definitions Container
+---------------------
+
+The definitions container **store definitions** by name.
+
+    [php]
+    use Mondongo\Mondator\Definition\Container;
+    use Mondongo\Mondator\Definition\Definition;
+
+    $definitions = new Container();
+
+    // assign one
+    $definitions->setDefinition('my_definition_name', new Definition('MyClass'));
+
+    // assign many (deletes all that existed previously)
+    $definitions->setDefinitions(array(
+        'definition1' => new Definition('MyClass1'),
+        'definition2' => new Definition('MyClass2'),
+    ));
+
+    // verify if it exists
+    $definitions->hasDefinition('definition1'); // true
+    $definitions->hasDefinition('definition3'); // false
+
+    // return one
+    $definition1 = $container->getDefinition('definition1');
+
+    // return all
+    $allDefinitions = $container->getDefinitions();
+
+    // delete one
+    $definitions->remove('definition1');
+
+    // delete all
+    $definitions->clear();
+
+You can also use them through the interface **\ArrayAccess**.
+
+    [php]
+    use Mondongo\Mondator\Definition\Container;
+    use Mondongo\Mondator\Definition\Definition;
+
+    $definitions = new Container();
+
+    // set
+    $definitions['definition1'] = new Definition('MyClass1');
+
+    // exists
+    isset($definitions['definition1']);
+
+    // get
+    $definition1 = $definitions['definition1'];
+
+    // unset
+    unset($definitions['definition1']);
+
+Outputs Containers
+------------------
+
+They serve to **store outputs**, and are used in the same way as the ones with definitions.
+
+General containers
+------------------
+
+The general containers store a definitions container and an outputs container.
+
+    [php]
+    use Mondongo\Mondator\Container;
+
+    $container = new Container();
+
+    $definitions = $container->getDefinitions();
+    $outputs     = $container->getOutputs();
+
+They can be also assigned.
+
+    use Mondongo\Mondator\Container;
+
+    $container = new Container($definitions, $outputs);

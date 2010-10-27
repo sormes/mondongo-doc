@@ -1,0 +1,37 @@
+Eventos
+=======
+
+Mondongo proporciona varios **hooks** (ganchos) en los documentos
+que se lanzan **antes y después** de realizar **ciertas acciones**.
+
+>[SIDEBAR]
+>Hooks
+>
+>  * **preSave**: antes de guardar (insertar o actualizar)
+>  * **postSave**: después de guardar (insertar o actualizar)
+>  * **preInsert**: antes de insertar
+>  * **postInsert**: después de insertar
+>  * **preUpdate**: antes de actualizar
+>  * **postUpdate**: después de actualizar
+>  * **preDelete**: antes de borrar
+>  * **postDelete**: después de borrar
+
+### Ejemplo de uso
+
+Guardar la fecha de inserción y actualización de un documento.
+
+    [php]
+    namespace Model\Document;
+
+    class Article extends \Model\Document\Base\Article
+    {
+        public function preInsert()
+        {
+            $this->setCreatedAt(new DateTime());
+        }
+
+        public function preUpdate()
+        {
+            $this->setUpdatedAt(new DateTime());
+        }
+    }

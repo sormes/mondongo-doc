@@ -1,0 +1,37 @@
+Generate Classes
+================
+
+With the command **_mondongo:generate_** it is generated the document classes and repositories 
+that you configure in **_Resources/config/mondongo_**. It is used
+[YAML](http://www.yaml.org) as the language to configurate the classes.
+
+MondongoUserBundle.
+
+    [yml]
+    Bundle\MondongoUserBundle\Document\User:
+        fields:
+            username: string
+            password: string
+        extensions:
+            - { class: Mondongo\Extension\Extra\Timestampable }
+            - { class: Mondongo\Extension\Extra\Ipable }
+
+MondongoBlogBundle.
+
+    [yml]
+    Bundle\MondongoBlogBundle\Document\Article:
+        fields:
+            author_id:    reference_one
+            title:        string
+            summary:      string
+            content:      string
+            is_active:    string
+            published_at: date
+        references:
+            author: { class: Bundle\MondongoUserBundle\Document\User, field: author:id, type: one }
+        extensions:
+            - { class: Mondongo\Extension\Extra\Timestampable }
+
+And finally we generate.
+
+    $ php application/console mondongo:generate

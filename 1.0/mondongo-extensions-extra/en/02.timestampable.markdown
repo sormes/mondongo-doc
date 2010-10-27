@@ -1,0 +1,47 @@
+Timestampable
+=============
+
+The _Timestampable_ extension saves automatically the creation and/or update date in the documents.
+
+Configuration
+-------------
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+            'extensions' => array(
+                array('class' => 'Mondongo\Extension\Extra\Timestampable'),
+            ),
+        ),
+    );
+
+>[SIDEBAR]
+>Options
+>
+>  * **created_enabled**: if saving or not the creation date (enabled by default)
+>  * **created_field**: field used to store the creation date (_created_at_ by default)
+>  * **updated_enabled**: if saving or not the update date (enabled by default)
+>  * **updated_field**: field used to store the update date (_updated_at_ by default)
+
+Usage
+-----
+
+    [php]
+    use Model\Document\Article;
+
+    $article = new Article();
+    $article->setTitle('Mondongo');
+    $article->save();
+
+    echo $article->getCreatedAt(); // new \DateTime('now')
+    echo $article->getUpdatedAt(); // null
+
+    $article->setContent('Content');
+    $article->save();
+
+    echo $article->getCreatedAt(); // the same \DateTime()
+    echo $article->getUpdatedAt(); // new \DateTime('now')

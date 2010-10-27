@@ -1,0 +1,136 @@
+Mondator
+========
+
+Mondator es un **sencillo y flexible generador de clases** para PHP.
+
+>[SIDEBAR]
+>Filosofía de Mondator
+>
+>Mondator usa **configuraciones de clases** y **extensiones** para generar las
+>clases. Las configuraciones de clases tienen la información de las mismas, y
+>las extensiones procesan esos datos e indican qué clases deben generarse,
+>dónde y cómo deben ser.
+>
+>Mondator es **extremadamente flexible**, ya que las clases que se generan a
+>partir de las configuraciones de clases dependen de las extensiones que le
+>asignes.
+
+Mondongo usa una **extensión** de Mondator para generar las clases de
+**documentos y repositorios**.
+
+Un ejemplo sencillo
+-------------------
+
+Vamos a realizar un **ejemplo sencillo** con Mondator **usando Mondongo**, así
+verás **paso a paso** lo que tendrás que hacer para usarlo y
+**entenderás cómo funciona**.
+
+### Crear un Mondator
+
+    [php]
+    $mondator = new Mondongo\Mondator\Mondator();
+
+### Asignar las Configuraciones de Clases.
+
+Las configuraciones de clases tienen la **información** de las clases.
+
+    [php]
+    $mondator->setConfigClasses(array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+        ),
+    ));
+
+>[TIP]
+>Puedes usar algún lenguaje como [YAML](http://www.yaml.org) para trabajar
+>**más fácilmente** con las configuraciones de clases.
+
+### Asignar las Extensiones
+
+Las extensiones se encargan de **procesar las configuraciones de clases** y
+**generar definiciones y salidas de clases**. Las definiciones indican qué
+clases se generarán, y las salidas dónde.
+
+El **orden** en el que se asignan las extensiones es el orden en el que se
+procesan, por lo que es importante que sea el correcto.
+
+Las extensiones también aceptan **opciones** para poder
+**personalizar su funcionamiento**.
+
+    [php]
+    $mondator->setExtensions(array(
+        new Mondongo\Extension\Core(array(
+            'default_document_output'   => '/path/to/Model/Document',
+            'default_repository_output' => '/path/to/Model/Repository',
+        )),
+    ));
+
+>[TIP]
+>Añadiendo **más extensiones** podrás **personalizar** los documentos y
+>repositorios tanto como quieras.
+
+### Procesar
+
+Una vez has asignado las configuraciones de clases y extensiones , sólo tienes
+que **procesar el Mondator** para **generar los archivos de las clases**.
+
+    [php]
+    $mondator->process();
+
+Un ejemplo completo
+-------------------
+
+Veamos un **ejemplo completo**, el cual podrás usar para **empezar a probar Mondongo**.
+
+    [php]
+    $mondongoLibDir = '/path/to/mondongo/lib';
+    $modelDir       = '/path/to/Model';
+
+    // cargador de clases
+    require_once($mondongoLibDir.'/vendor/symfony/src/Symony/Component/HttpFoundation/UniversalClassLoader.php');
+
+    $loader = new \Symfony\Comopnent\HttpFoundation\UniversalClassLoader();
+    $loader->registerNamespaces(array(
+        'Mondongo' => $mondongoLibDir,
+        'Model'    => dirname($modelDir),
+    ));
+
+    // cargamos clases de Mondator
+    use Mondongo\Mondator\Mondator;
+    use Mondongo\Mondator\Output;
+
+    // iniciar Mondator
+    $mondator = new Mondator();
+
+    // asignar configuraciones de clases
+    $mondator->setConfigClasses(array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+        ),
+    ));
+
+    // asignar extensiones
+    $mondator->setExtensions(array(
+        new Mondongo\Extension\Core(array(
+            'default_document_output'   => $modelDir.'/Document',
+            'default_repository_output' => $modelDir.'/Repository',
+        )),
+    ));
+
+    // procesar
+    $mondator->process();
+
+Si miras los archivos generados verás que hay clases de documentos y
+repositorios **vacías** para que las puedas **personalizar**, y otras **Base**
+que **no debes tocarlas** ya que se **sobreescriben** al volver a procesar el
+Mondator.
+
+>[NOTE]
+>Si quieres saber más sobre **Mondator** puedes ver su
+>[documentación](http://mondongo.es/documentation).

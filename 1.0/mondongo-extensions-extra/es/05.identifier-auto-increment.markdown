@@ -1,0 +1,47 @@
+IdentifierAutoIncrement
+=======================
+
+La extensión _IdentifierAutoIncrement_ añade un campo que se va autoincrementando
+automáticamente.
+
+Esto es útil cuando necesitamos números autoincrementales en los documentos, ya
+que el *_id* de Mongo no es autoincremental.
+
+Configuración
+-------------
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+            'extensions' => array(
+                array('class' => 'Mondongo\Extension\Extra\IdentifierAutoIncrement'),
+            ),
+        ),
+    );
+
+>[SIDEBAR]
+>Opciones
+>
+>  * **field** campo en el que se guardará el identificador (_identifier_ por defecto)
+
+Uso
+---
+
+    [php]
+    use Model\Document\Article;
+
+    $article = new Article();
+    $article->setTitle('Mondongo');
+    $article->save();
+
+    echo $article->getIdentifier(); // 1
+
+    $article2 = new Article();
+    $article2->setTitle('Mondongo');
+    $article2->save();
+
+    echo $article2->getIdentifier(); // 2

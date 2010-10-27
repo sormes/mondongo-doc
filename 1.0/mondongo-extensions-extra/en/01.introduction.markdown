@@ -1,0 +1,60 @@
+Introduction
+============
+
+The **Mondongo Extensions Extra** are the official extensions to use in Mondongo documents.
+
+>[SIDEBAR]
+>Extensions
+>
+>  * **Timestampable**: saves the creation and/or update date in the documents
+>  * **Ipable**: saves the IP from where documents are created and/or saved
+>  * **Sluggable**: saves the _slug_ of a field in the documents
+>  * **IdentifierAutoIncremente**: adds an identifier field to the documents that is autoincremental
+>  * **Translation**: allows translating fields in the documents
+
+Instalation
+-----------
+
+You can instalate them **directly**, from **git**, **svn** or **PEAR**.
+
+### Directly
+
+You can download directly from
+[tar](http://github.com/mondongo/mondongo-extensions-extra/tarball/master)
+or
+[zip](http://github.com/mondongo/mondongo-extensions-extra/zipball/master).
+
+### Git
+
+The official repository of the _Mondongo Extensions Extra_ is
+[http://github.com/mondongo/mondongo-extensions-extra](http://github.com/mondongo/mondongo-extensions-extra).
+
+### Subversion
+
+There is an access through Subversion to the Git repository, in
+http://svn.github.com/mondongo/mondongo-extensions-extra
+
+### PEAR
+
+[Mondongo PEAR Channel](http://pear.mondongo.es/)
+
+    $ pear channel-discover pear.mondongo.es
+    $ pear install mondongo/MondongoExtensionsExtra-beta
+
+Configuration
+-------------
+
+The _Mondongo Extensions Extra_ use, as Mondongo,
+**namespaces and class names**
+[standards in PHP 5.3](http://groups.google.com/group/php-standards/web/psr-0-final-proposal),
+so they can be used with any loader that implement them.
+
+    [php]
+    require('/path/to/mondongo/lib/vendor/symfony/src/Symfony/Component/HttpFoundation/UniversalClassLoader.php');
+
+    $loader = new \Symfony\Comopnent\HttpFoundation\UniversalClassLoader();
+    $loader->registerNamespaces(array(
+        'Mondongo\\Extension\\Extra' => '/path/to/mondongo-extensions-extra/lib',
+        'Mondongo'                   => '/path/to/mondongo/lib',
+    ));
+    $loader->register();

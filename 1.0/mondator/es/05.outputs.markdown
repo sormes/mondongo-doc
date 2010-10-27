@@ -1,0 +1,18 @@
+Salidas
+=======
+
+Las salidas se usan para indicar el fichero de salida de las clases y si se
+sobreescriben o no.
+
+    [php]
+    use Mondongo\Mondator\Output\Output;
+
+    // sin sobreescribir
+    $output = new Output('/path/to/my/project/Model/Document/Article.php');
+
+    // sobreescribiendo (true como segundo argumento)
+    $output = new Output('/path/to/my/project/Model/Document/Base/Article.php', true);
+
+>[NOTE]
+>Si se sobreescribe o no suele depender de si el usuario va a personalizar
+>la clase, para no perder sus cambios.

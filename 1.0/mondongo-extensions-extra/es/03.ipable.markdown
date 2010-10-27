@@ -1,0 +1,49 @@
+Ipable
+======
+
+La extensión _Ipable_ guarda automáticamente la ip desde donde se crean y/o
+actualizan los documentos.
+
+Configuración
+-------------
+
+    [php]
+    array(
+        'Model\Document\Article' => array(
+            'fields' => array(
+                'title'   => 'string',
+                'content' => 'string',
+            ),
+            'extensions' => array(
+                array('class' => 'Mondongo\Extension\Extra\Ipable'),
+            ),
+        ),
+    );
+
+>[SIDEBAR]
+>Opciones
+>
+>  * **created_enabled**: si guardar o no la ip desde donde se crea (activado por defecto)
+>  * **created_field**: campo para guardar ip desde donde se crea (_created_from_ por defecto)
+>  * **updated_enabled**: si guardar o no la ip desde donde se actualiza (activado por defecto)
+>  * **updated_field**: campo para guardar la ip desde donde se actualiza (_updated_from_ por defecto)
+>  * **get_ip_callable**: callable que devuelve la ip a guardar (_Mondongo\Extension\Extra\Ipable::getIp()_ por defecto)
+
+Uso
+---
+
+    [php]
+    use Model\Document\Article;
+
+    $article = new Article();
+    $article->setTitle('Mondongo');
+    $article->save();
+
+    echo $article->getCreatedFrom(); // 127.0.0.1
+    echo $article->getUpdatedFrom(); // null
+
+    $article->setContent('Content');
+    $article->save();
+
+    echo $article->getCreatedFrom(); // 127.0.0.1
+    echo $article->getUpdatedFrom(); // 127.0.0.1

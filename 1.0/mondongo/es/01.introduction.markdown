@@ -1,0 +1,98 @@
+Introducción
+============
+
+**Mondongo** es un *Object Document Mapper* (**ODM**) sencillo, potente y
+ultrarrápido para **PHP** y **MongoDB**.
+
+¿Qué es MongoDB?
+----------------
+
+**MongoDB** (*Mongo*) es una **base de datos** escalable, de alto
+rendimiento, de código abierto y orientada a documentos.
+
+Mongo (y el movimiento [NOSQL](http://en.wikipedia.org/wiki/NoSQL) en general) responden a las
+**necesidades de rendimiento** de bases de datos, que cada vez más aplicaciones
+(**web** especialmente) tienen, debido al
+**alto número de lecturas, escrituras** y cantidad de información a guardar.
+
+>[NOTE]
+>Si quieres conocer más MongoDB puedes visitar su web:
+>[http://www.mongodb.org](http://www.mongodb.org)
+
+¿Qué es un ODM?
+---------------
+
+Un **ODM** es una herramienta que **mapea la estructura** de la base de datos
+**en objetos** (PHP en este caso). De esta manera podrás trabajar con tus
+documentos de la base de datos mediante objetos PHP, con las grandes ventajas
+que eso conlleva.
+
+Un ODM también **abstrae** operaciones habituales con los documentos, y
+proporciona utilidades para hacer mucho más fácil tareas comunes.
+
+Un ODM tiene también una desventaja: **el rendimiento**. Esto es debido a usar
+objetos y abstraer operaciones.
+
+¿Por qué un ODM con Mongo?
+--------------------------
+
+Aparentemente la filosofía de Mongo no concuerda con la de los ODM,
+porque por una parte Mongo acelera la base de datos y por otra los ODM
+ralentizan las aplicaciones. Es cierto, pero no nos olvidemos del
+**desarrollo rápido de aplicaciones**.
+
+El desarrollo rápido de aplicaciones (*Rapid Application Development* **RAD**)
+es **muy importante** para que tus aplicaciones estén funcionando
+**tan pronto como sea posible**, porque no sirve de nada tardar en acabar una
+aplicación superrápida si cuando la vas a poner a funcionar ya
+no puede competir o es inmantenible.
+
+¿Por qué Mondongo?
+------------------
+
+>[SIDEBAR]
+>Mondongo es a los **ODM** lo que Mongo a las **bases de datos**.
+>
+>  * **Sencillo**: Mondongo es desarrollado de una manera sencilla. Esto hace que sea fácil de aprender, usar, y se eviten bugs.
+>  * **Potente**: Mondongo es muy flexible gracias a Mondator, por lo que podrás usarlo para desarrollar cualquier tipo de aplicación.
+>  * **Ultrarrápido**: Mondongo ha sido diseñado para ser extremadamente ligero en consumo de memoria y coste de procesamiento.
+
+¿Todavía no estás convencido? Permíteme enseñarte algunas
+características más:
+
+  * **Referencias y Embebidos**: Mondongo te permite trabajar con [referencias y embebidos](http://www.mongodb.org/display/DOCS/Schema+Design#SchemaDesign-Embedvs.Reference) muy fácilmente.
+  * **Extensiones**: Mondongo permite personalizarse infinítamente con extensiones Mondator.
+  * **Índices**: Mondongo te permite manejar fácilmente los [índices](http://www.mongodb.org/display/DOCS/Indexes) de las colecciones.
+  * **Eventos**: Mondongo lanza _hooks_ (ganchos) antes y después de insertar, actualizar, guardar, borrar documentos.
+  * **GridFS**: Mondongo permite guardar archivos de cualquier tamaño usando [GridFS](http://www.mongodb.org/display/DOCS/GridFS).
+  * **Log**: Mondongo permite guardar logs de las consultas para mejorar el desarrollo.
+  * **batchInsert**: Mondongo usa [batchInsert](http://www.php.net/manual/en/mongocollection.batchinsert.php) para insertar documentos de manera eficiente.
+  * **Operaciones Atómicas**: Mondongo usa [operaciones atómicas](http://www.mongodb.org/display/DOCS/Atomic+Operations) para actualizar y borrar documentos eficientemente.
+  * **Integración con IDEs**: Mondongo usa código generado, por lo que podrás integrarlo con tu IDE.
+  * **Testeado**: Mondongo está completamente probado con pruebas automáticas con [PHPUnit](http://www.phpunit.de).
+
+>[NOTE]
+>Mondongo es **el mapeador más rápido** en PHP **con diferencia**.
+>Más información en la
+>[comparativa de rendimiento](http://mondongo.es/performance).
+
+Requisitos
+----------
+
+### De tu ordenador
+
+Mondongo requiere **PHP 5.3.0** o superior.
+
+## De tí
+
+Mondongo usa [PHP orientado a objetos](http://www.php.net/manual/en/language.oop5.php)
+y [Mongo](http://www.mongodb.org/display/DOCS/Tutorial), por lo que para
+empezar a usarlo deberías conocer ambas cosas al menos mínimamente.
+
+Instalación
+-----------
+
+Puedes **instalar** Mondongo bajándolo **directamente**, por **git**, **svn** o
+**PEAR**.
+
+Para más información visita la [página de instalación de Mondongo](http://mondongo.es/installation).

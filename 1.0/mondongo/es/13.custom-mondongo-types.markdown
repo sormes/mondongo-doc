@@ -1,0 +1,62 @@
+Tipos Mondongo Personalizados
+=============================
+
+Puedes usar _tipos mondongo personalizados_ para realizar el **mapeo de documentos**.
+
+Para ello tienes que crear algún tipo mondongo y añadirlo al contenedor de tipos mondongo.
+
+Crear tipos mondongo personalizados
+-----------------------------------
+
+Un _tipo mondongo_ es una **clase** que herede de **_Mondongo\Type\Type_**
+e implemente sus **cuatro métodos** abstractos.
+
+Veamos un ejemplo.
+
+    [php]
+    namespace MyProject\Type;
+
+    use Mondongo\Type\Type;
+
+    class MyType extends Type
+    {
+        public function toMongo($value)
+        {
+            return (string) $value;
+        }
+
+        public function toPHP($value)
+        {
+            return (string) $value;
+        }
+
+        public function toMongoInString()
+        {
+            return '%to% = (string) %from%;';
+        }
+
+        public function toPHPInString()
+        {
+            return '%to% = (string) %from%;';
+        }
+    }
+
+>[SIDEBAR]
+>Cuatro métodos abstractos
+>
+>  * **toMongo**: pasar un valor PHP a Mongo
+>  * **toPHP**: pasar un valor Mongo a PHP
+>  * **toMongoInString**: pasar un valor PHP a Mongo en cadena (para generar las clases)
+>  * **toPHPInString**: pasar un valor Mongo a PHP en cadena (para generar las clases)
+
+Contenedor de tipos mondongo
+----------------------------
+
+Una vez tenemos el tipo tenemos que **añadirlo al contenedor de tipos mondongo**
+para usarlo.
+
+    [php]
+    Mondongo\Type\Container::addType('my_type', 'MyProject\Type\MyType');
+
+>[NOTE]
+>**Sólo** es necesario hacerlo **al generar las clases**, no al usarlas.

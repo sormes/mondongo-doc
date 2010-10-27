@@ -1,0 +1,136 @@
+Queries
+=========
+
+The queries in Mondongo are made **through the repositories**.
+
+Selecting
+---------
+
+You can select documents with three methods.
+
+### ->find()
+
+The method **_->find()_** is the **general** method to select documents.
+It supports an **array of options**.
+
+    [php]
+    // all the articles
+    $articles = $articleRepository->find();
+
+    // filtering (active articles)
+    $articles = $articleRepository->find(array('query' => array('is_active' => true)));
+
+    // selecting fields explicitly
+    $articles = $articleRepository(array('fields' => array('title' => 1, 'content' => 1)));
+
+    // sorting (date ascending)
+    $articles = $articleRepository->find(array('sort' => array('date' => 1)));
+
+    // limiting
+    $articles = $articleRepository->find(array('limit' => 10));
+
+    // skipping
+    $articles = $articleRepository->find(array('skip' => 5));
+
+The options can be combined.
+
+    [php]
+    $articles = $articleRepository->find(array(
+        'query'  => array('is_active' => true),
+        'fields' => array('title' => 1, 'content' => 1),
+        'sort'   => array('date' => 1),
+        'limit'  => 10,
+        'skip'   => 5
+    ));
+
+>[SIDEBAR]
+>Options
+>
+>  * **query**: *criteria* to filter the query
+>  * **fields**: fields to select (or deselect)
+>  * **sort**: sorting of the results
+>  * **limit**: limit of results
+>  * **skip**: skip of results
+>
+>All the options support the **same syntax as with Mongo**, so it's 
+>**very easy** to use them.
+
+It also exists the access from the Mondongo.
+
+    [php]
+    $articles = $mondongo->find('Model\Document\Article', array('limit' => 10));
+
+If there isn't any results it returns **_null_**.
+
+>[NOTE]
+>You can see the [Mongo documentation about queries](http://www.mongodb.org/display/DOCS/Querying)
+>for further information about **how querying**.
+
+### ->findOne()
+
+The method **_->findOne()_** return only **one result**. It supports
+**the same options** as with the method _->find()_.
+
+    [php]
+    $article = $articleRepository->findOne();
+
+    // with options
+    $article = $articleRepository->findOne(array('query' => array('_id' => $mongoId)));
+
+    // from the Mondongo
+    $article = $mondongo->findOne('Model\Document\Article', array('query' => array('_id' => $mongoId)));
+
+### ->findOneById()
+
+The method **_->findOneById()_** return a document for each **_MongoId_**.
+
+    [php]
+    $article = new $articleRepository->findOneById($mongoId);
+
+    // from the Mondongo
+    $article = $mondongo->findOneById('Model\Document\Article')->findOneById($mongoId);
+
+>[CAUTION]
+>The method **_->findOneById()_** only allows **_MongoId_** objects, not strings.
+
+Counting
+--------
+
+To **count documents** it is used the option **_->count()_**.
+
+    [php]
+    // all
+    $count = $articleRepository->count();
+
+    // with conditions
+    $count = $articleRepository->count(array('is_active' => false));
+
+    // from the Mondongo
+    $count = $mondongo->count('Model\Document\Article', array('is_active' => false));
+
+Deleting
+--------
+
+To **delete documents** it is used the option **_->remove()_**.
+
+    [php]
+    // all
+    $articleRepository->remove();
+
+    // with conditions
+    $articleRepository->remove(array('is_active' => false));
+
+    // from the Mondongo
+    $mondongo->remove('Model\Document\Article', array('is_active' => false));
+
+>[NOTE]
+>
+
+Mongo Collection
+----------------
+
+You can also use the Mongo Collection **directly** to do the
+**customized operations** you need.
+
+    [php]
+    $collection = $articleRepository->getCollection();

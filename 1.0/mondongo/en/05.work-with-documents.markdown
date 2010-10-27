@@ -1,0 +1,162 @@
+Working with documents
+======================
+
+The **Mondongo documents** are simply **PHP objects**.
+
+    [php]
+    use Model\Document\Article;
+
+    $article = new Article();
+
+>[NOTE]
+>To **modify and access** the Mondongo document's data Mondongo it is used
+>**setters and getters**.
+
+Identifier
+----------
+
+To access the identifier **_id** of the Mongo documents it is used the
+**_->getId()_** function. It returns **_null_** if the document is new.
+
+    [php]
+    $id = $article->getId();
+
+>[TIP]
+>To verify if the document is new, you can also use the function
+>**_->isNew()_**.
+
+Fields
+------
+
+We simply use the setters and getters.
+
+    [php]
+    // setter
+    $article->setTitle('Mondongo');
+
+    // getter
+    $title = $article->getTitle();
+
+References
+-----------
+
+### To one (one)
+
+The **references to one** can be assigned with the **object** or directly with the **id**.
+
+    [php]
+    // object
+    $article->setAuthor($author);
+
+    // id
+    $article->setAuthorId($author->getId());
+
+>[CAUTION]
+>The referenced **objects** **can't be new**.
+
+And they are retrieved the same way.
+
+    [php]
+    // object
+    $author = $article->getAuthor();
+
+    // id
+    $id = $article->getAuthorId();
+
+>[NOTE]
+>Always that it can be done it is preferable **to assign by object**.
+
+### To many (many)
+
+You can work with **relations to many** it is used the special object
+**_Mondongo\Group_** to store the referenced documents.
+
+Adding and deleting documents.
+
+    [php]
+    // adding one by one
+    $article->getCategories()->add($category1);
+    $article->getCategories()->add($category2);
+
+    // adding all (deletes all that existed previously)
+    $article->getCategories()->setElements(array($category2, $category4, $category6));
+
+    // deleting one by one
+    $article->getCategories()->remove($category4);
+
+    // deleting all
+    $article->getCategories()->clear();
+
+Assigning an object _Mondongo\Group_ directly.
+
+    [php]
+    $group = new Mondongo\Group(array($category1, $category2));
+
+    $article->setCategories($group);
+
+Working with a _Mondongo\Group_ object.
+
+    [php]
+    // implements the \Countable interface
+    count($article->getCategories())
+
+    // implements the \IteratorAggregate interface
+    foreach ($article->getCategories() as $category) {
+        // ...
+    }
+
+Embeds
+---------
+
+With the embeds you work in the same way as with the references, except that
+**only through objects** because they don't have an id.
+
+### To one (one)
+
+    [php]
+    // setter
+    $article->setSource($source);
+
+    // getter
+    $source = $article->getSource();
+
+### To many (many)
+
+    [php]
+    $article->getComments()->add($comment1);
+
+    $article->getComments()->remove($comment1);
+
+    // ...
+
+Relations
+---------
+
+The relations **can only be accesed**, and return a document or
+a _Mondongo\Group_ depending on the type.
+
+    [php]
+    // one_one
+    $phonenumber = $author->getPhoenumber(); // document
+
+    // one_many
+    $articles = $authors->getArticles(); // Mondongo\Group
+
+    // many_many
+    $articles = $category->getArticles(); // Mondongo\Group
+
+Save and delete
+----------------
+
+To save and delete Mondongo documents you can use the methods
+**_->save()_** y **_->delete()_** of the documents.
+
+    [php]
+    // save
+    $article->save();
+
+    // delete
+    $article->delete();
+
+>[CAUTION]
+>These methods **do not exist in embedded documents**.
