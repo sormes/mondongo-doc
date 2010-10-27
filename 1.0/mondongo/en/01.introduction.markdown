@@ -1,7 +1,7 @@
 Introduction
 ============
 
-**Mondongo** is an easy, poweful and ultrafast *Object Document Mapper*
+**Mondongo** is a simple, poweful and ultrafast *Object Document Mapper*
 (**ODM**) for **PHP** and **MongoDB**.
 
 ¿What is MongoDB?
