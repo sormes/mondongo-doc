@@ -11,7 +11,7 @@ For it, we have to configure the classes in _yml_ files inside **config/mondongo
       connection: mondongo
       collection: articles
       fields:
-        author_id: id
+        author_id: reference_one
         title:     string
         content:   string
         is_active: { type: boolean, default: true }
