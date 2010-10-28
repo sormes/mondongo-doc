@@ -1,7 +1,7 @@
 Fixtures
 ========
 
-Puedes definir fixtures en **_data/mondongo_**:
+You can define fixtures in **_data/mondongo_**:
 
     [yml]
     Articles:
@@ -14,6 +14,6 @@ Puedes definir fixtures en **_data/mondongo_**:
       pablodip:
         name: Pablo Díez
 
-Y cargarlos:
+And load them:
 
     $ ./symfony mondongo:data-load

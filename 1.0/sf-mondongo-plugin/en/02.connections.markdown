@@ -1,7 +1,7 @@
-Conexiones
-==========
+Connections
+===========
 
-Podemos definir conexiones Mondongo en el **_databases.yml_**:
+We can define Mondongo connections in the **_databases.yml_**:
 
     [yml]
     all:
@@ -11,7 +11,7 @@ Podemos definir conexiones Mondongo en el **_databases.yml_**:
           server:   mongodb://localhost:27017
           database: my_database
 
-Y también con opciones.
+Also with options:
 
     [yml]
     all:

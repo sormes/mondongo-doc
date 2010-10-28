@@ -1,6 +1,6 @@
-Indexes
+Índices
 =======
 
-You can easily synchronize all the indexes of the model.
+Puedes sincronizar fácilmente todos los índices del modelo.
 
     $ ./symfony mondongo:ensure-indexes

@@ -1,7 +1,7 @@
-Forms
-=====
+Formularios
+===========
 
-You can use the **Mondongo forms** to save documents automatically.
+Puedes usar **formularios Mondongo** para guardar documentos automáticamente.
 
     [php]
     class articleActions extends sfActions
@@ -26,67 +26,70 @@ You can use the **Mondongo forms** to save documents automatically.
       }
     }
 
-We can also assign them the document:
+También podemos asignarles el documento:
 
     [php]
     $this->form = new ArticleForm($article);
 
-And obtain it:
+Y obtenerlo:
 
     [php]
     $article = $this->form->getDocument();
 
 >[TIP]
->When the forms are generated, it is also generated the class **_BaseMondongoForm_**, from which
->Mondongo forms extend from. In it, you can customize functionalities of all the Mondongo forms.
+>Al generar los formularios se genera también la clase **_BaseMondongoForm_** de la
+>que extienden los formularios Mondongo. En ella puedes personalizar funcionalidades
+>de todos los formularios Mondongo.
 
-References
+Referencias
 -----------
 
-The _sfMondongoPlugin_ includes a widget and a validator to be able to
-select **references in the Mondongo forms**.
+El _sfMondongoPlugin_ también incluye un widget y un validador para poder
+seleccionar **referencias en los formularios Mondongo**.
 
 ### sfWidgetFormMondongoChoice
 
-With the _sfWidgetFormMondongoChoice_ we can select one or several referenced documents.
+Con el _sfWidgetFormMondongoChoice_ podemos seleccionar uno o varios documentos
+referenciados.
 
 >[SIDEBAR]
->Options:
+>Opciones:
 >
->  * **model**: (required) the referenced class
->  * **add_empty**: if adding an empty option
->  * **method**: method to obtain the value to show from the document
->  * **find_query**: query to obtain the choices
->  * **find_options**: options for the query
+>  * **model**: (obligatorio) la clase referenciada
+>  * **add_empty**: si añadir una opción en blanco
+>  * **method**: método para obtener el valor a mostrar del documento
+>  * **find_query**: query para la consulta
+>  * **find_options**: opciones para la consulta
 
     [php]
-    // to one
+    // a uno
     $this->widgetSchema['author_id'] = new sfWidgetFormMondongoChoice(array('model' => 'Author'));
 
-    // to many
+    // a varios
     $this->widgetSchema['category_ids'] = new sfWidgetFormMondongoChoice(array('model' => 'Category', 'multiple' => true));
 
 >[TIP]
->The *sfWidgetFormMondongoChoice* extends from *sfWidgetFormChoice*, so we
->can use all its options.
+>El *sfWidgetFormMondongoChoice* extiende de *sfWidgetFormChoice*, por lo que
+>también podemos usar sus opciones.
 
 ### sfValidatorMondongoChoice
 
-With the *sfValidatorMondongoChoice* we can validate one or many referenced documents.
+con el *sfValidatorMondongoChoice* validamos uno o varios documentos
+referenciados.
 
     [php]
-    // to one
+    // a uno
     $this->validatorSchema['author_id'] = new sfValidatorMondongoChoice(array('model' => 'Author));
 
-    // to many
+    // a varios
     $this->validatorSchema['category_ids'] = new sfValidatorMondongoChoice(array('model' => 'Category', 'multiple' => true));
 
 >[SIDEBAR]
->Options:
+>Opciones:
 >
->  * **model**: (required) the referenced class
->  * **field**: the field from which it is referenced (by default *_id*)
->  * **find_query**: query to obtain the choices
->  * **multiple**: if it is multiple
->  * **min**: minimum number of referenced
->  * **max**: maximum number of referenced
+>  * **model**: (obligatorio) la clase referenciada
+>  * **field**: el campo por el que se referencia (por defecto *_id*)
+>  * **find_query**: query para la consulta
+>  * **multiple**: si es múltiple
+>  * **min**: número mínimo de referenciados
+>  * **max**: número máximo de referenciados

@@ -1,10 +1,10 @@
-Generar Clases
-==============
+Generate classes
+================
 
-Con el _sfMondongoPlugin_ podemos generar el modelo y los formularios
-fácilmente desde [YAML](http://www.yaml.org).
+With the _sfMondongoPlugin_ we can generate the model and the forms
+easily from [YAML](http://www.yaml.org).
 
-Para ello configuramos las clases en archivos _yml_ dentro de **config/mondongo**.
+For it, we have to configure the classes in _yml_ files inside **config/mondongo**.
 
     [yml]
     Article:
@@ -35,10 +35,10 @@ Para ello configuramos las clases en archivos _yml_ dentro de **config/mondongo*
       fields:
         number: string
 
-Y luego lanzamos la tarea.
+And finally we launch the task.
 
     $ ./symfony mondongo:build
 
 >[NOTE]
->La tarea nos generará en **lib/model/mondongo** los documentos y en
->**lib/form/mondongo** los formularios.
+>The task will generate in **lib/model/mondongo** the documents and in
+>**lib/form/mondongo** the forms.
