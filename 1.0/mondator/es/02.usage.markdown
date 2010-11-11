@@ -89,6 +89,7 @@ Veamos un **ejemplo completo**, el cual podrás usar para **empezar a probar Mon
         'Mondongo' => $mondongoLibDir,
         'Model'    => dirname($modelDir),
     ));
+    $loader->register();
 
     // cargamos clases de Mondator
     use Mondongo\Mondator\Mondator;

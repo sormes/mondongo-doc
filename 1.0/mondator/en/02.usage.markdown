@@ -1,7 +1,7 @@
 Usage
 =====
 
-Mondator uses **classes configurations** and **extensions** to generate the 
+Mondator uses **classes configurations** and **extensions** to generate the
 classes. The classes configurations have the information about themselves, and
 the extensions process those data and indicate which classes have to be generated,
 where and how they must be.
@@ -45,7 +45,7 @@ The extensions are the ones ordered to **process the classes configurations** an
 **generate definitions and classes outputs**. The definitions indicate which
 classes will be generated, and the outputs where they will be generated.
 
-The **order** in which the extensions are assigned is the order in which they are processed, 
+The **order** in which the extensions are assigned is the order in which they are processed,
 so it is very important that it is the right order.
 
 The extensions also accept **options** to be able to
@@ -88,6 +88,7 @@ Let's see a **full example**, which you can use to **start trying Mondongo**.
         'Mondongo' => $mondongoLibDir,
         'Model'    => dirname($modelDir),
     ));
+    $loader->register();
 
     // load Mondator classes
     use Mondongo\Mondator\Mondator;
