@@ -20,7 +20,7 @@ For it, we have to configure the classes in _yml_ files inside **config/mondongo
       references:
         author: { class: Author, field: author_id, type: one }
       indexes:
-        - { fields: { date: 1 } }
+        - { keys: { date: 1 } }
       extensions:
         - { class: Mondongo\Extension\Extra\Timestampable }
         - { class: Mondongo\Extension\Extra\Sluggable, options{ from_field: title } }
