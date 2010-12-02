@@ -11,7 +11,7 @@ e incluye el **UniversalClassLoader** de *Symfony2*.
     [php]
     require('/path/to/mondongo/lib/vendor/symfony/src/Symfony/Component/HttpFoundation/UniversalClassLoader.php');
 
-    $loader = new \Symfony\Comopnent\HttpFoundation\UniversalClassLoader();
+    $loader = new \Symfony\Component\HttpFoundation\UniversalClassLoader();
     $loader->registerNamespace('Mondongo', '/path/to/mondongo/lib');
     $loader->register();
 
